@@ -2,7 +2,7 @@
 	#include<stdio.h>
 	#include<string.h>
 	#include<stdlib.h>
-	#include "syntaxique.tab.h"
+	#include "TP.tab.h"
 	extern FILE * yyin;
 	int nbl=1,nbc=1;
 %}
@@ -32,6 +32,7 @@ SEP "||"
 ")" {nbc++;return ')';}
 ";" {nbc++;return ';';}
 "\n" {nbc=1;nbl++;}
+"\t" {nbc=nbc+1;}
 "Programme" {nbc=nbc+strlen(yytext);return Programme;}
 "Real" {nbc=nbc+strlen(yytext); return Real;}
 "Integer" {nbc=nbc+strlen(yytext);return Integer;}

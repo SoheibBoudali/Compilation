@@ -1,0 +1,13 @@
+#TAB
+#Calcul
+Programme Mp {
+Integer X || Y ;
+		Real CONST Z;
+		Z:= 5;
+		E:=1+1;
+		While(X==5){
+		EXECUT 
+		A:=K5;
+		IF(X>6)
+}
+}
