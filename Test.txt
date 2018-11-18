@@ -1,7 +1,7 @@
 #TAB
 #Calcul
 Programme Mp {
-Integer X || Y ;
+Integer ANTICONSTITUfsdfsd || Y ;
 		Real CONST Z;
 		Z:= 5;
 		E:=1+1;

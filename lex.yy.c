@@ -441,7 +441,8 @@ char *yytext;
 	#include "TP.tab.h"
 	extern FILE * yyin;
 	int nbl=1,nbc=1;
-#line 445 "lex.yy.c"
+	extern YYSTYPE yylval;
+#line 446 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -592,9 +593,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 14 "TP.l"
+#line 15 "TP.l"
 
-#line 598 "lex.yy.c"
+#line 599 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -679,179 +680,179 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 15 "TP.l"
+#line 16 "TP.l"
 {nbc=nbc+2; return SEP;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 16 "TP.l"
+#line 17 "TP.l"
 {nbc++;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 17 "TP.l"
+#line 18 "TP.l"
 {nbc=nbc+strlen(yytext);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 18 "TP.l"
+#line 19 "TP.l"
 {nbc=nbc+2; return EGAL;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 19 "TP.l"
+#line 20 "TP.l"
 {nbc++; return ']';}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 20 "TP.l"
+#line 21 "TP.l"
 {nbc++; return '[';}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 21 "TP.l"
+#line 22 "TP.l"
 {nbc++;return'{';}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 22 "TP.l"
+#line 23 "TP.l"
 {nbc++;return'}';}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 23 "TP.l"
+#line 24 "TP.l"
 {nbc++; return ',';}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 24 "TP.l"
+#line 25 "TP.l"
 {nbc++; return '+';}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 25 "TP.l"
+#line 26 "TP.l"
 {nbc++; return '-'; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 26 "TP.l"
+#line 27 "TP.l"
 {nbc++; return '*'; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 27 "TP.l"
+#line 28 "TP.l"
 {nbc++; return '/'; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 28 "TP.l"
+#line 29 "TP.l"
 {nbc=nbc+7;nbl++;nbc=1;return BOUCLE;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 29 "TP.l"
+#line 30 "TP.l"
 {nbc=nbc+strlen(yytext);nbl++;nbc=1;return TAB;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 30 "TP.l"
+#line 31 "TP.l"
 {nbc=nbc+strlen(yytext);nbl++;nbc=1;return Calcul;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 31 "TP.l"
+#line 32 "TP.l"
 {nbc++;return '(';}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 32 "TP.l"
+#line 33 "TP.l"
 {nbc++;return ')';}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 33 "TP.l"
+#line 34 "TP.l"
 {nbc++;return ';';}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 34 "TP.l"
+#line 35 "TP.l"
 {nbc=1;nbl++;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 35 "TP.l"
+#line 36 "TP.l"
 {nbc=nbc+1;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 36 "TP.l"
+#line 37 "TP.l"
 {nbc=nbc+strlen(yytext);return Programme;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 37 "TP.l"
+#line 38 "TP.l"
 {nbc=nbc+strlen(yytext); return Real;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 38 "TP.l"
+#line 39 "TP.l"
 {nbc=nbc+strlen(yytext);return Integer;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 39 "TP.l"
+#line 40 "TP.l"
 {nbc=nbc+strlen(yytext);return CONST;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 40 "TP.l"
+#line 41 "TP.l"
 {nbc=nbc+strlen(yytext);return While;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 41 "TP.l"
+#line 42 "TP.l"
 {nbc=nbc+strlen(yytext); return EXECUT;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 42 "TP.l"
+#line 43 "TP.l"
 {nbc=nbc+strlen(yytext); return IF;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 43 "TP.l"
+#line 44 "TP.l"
 {
     if(strlen(yytext)>12){
-    	printf("erreur! idf %s trop long\n",yytext);}										
-       	nbc=nbc+strlen(yytext); return IDF;
+    	printf("Erreur! l'identifiant %s est trop long (Taille maximum 12 caractere)\n",yytext);}										
+       	nbc=nbc+strlen(yytext); yylval.chaine=strdup(yytext); return IDF;
     }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 48 "TP.l"
-{nbc=nbc+strlen(yytext);return ENTIER;}
+#line 49 "TP.l"
+{nbc=nbc+strlen(yytext);yylval.entier=atoi(yytext); return ENTIER;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 49 "TP.l"
-{nbc=nbc+strlen(yytext);return REEL;}
+#line 50 "TP.l"
+{nbc=nbc+strlen(yytext);yylval.reel=atof(yytext); return REEL;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 50 "TP.l"
+#line 51 "TP.l"
 {nbc=nbc+strlen(yytext);return OPR; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 51 "TP.l"
+#line 52 "TP.l"
 {printf("Erreur lexicale ligne %d colonne %d ======> %s Inconnu \n",nbl,nbc,yytext);}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 52 "TP.l"
+#line 53 "TP.l"
 ECHO;
 	YY_BREAK
-#line 855 "lex.yy.c"
+#line 856 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1737,7 +1738,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 52 "TP.l"
+#line 53 "TP.l"
 
 	int yywrap()
 	{

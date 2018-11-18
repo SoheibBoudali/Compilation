@@ -123,7 +123,14 @@ extern int nbl,nbc;
 #endif
 
 #if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
-typedef int YYSTYPE;
+#line 8 "TP.y"
+typedef union YYSTYPE {
+char *chaine;
+int entier;
+float reel;
+} YYSTYPE;
+/* Line 196 of yacc.c.  */
+#line 134 "TP.tab.c"
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
@@ -135,7 +142,7 @@ typedef int YYSTYPE;
 
 
 /* Line 219 of yacc.c.  */
-#line 139 "TP.tab.c"
+#line 146 "TP.tab.c"
 
 #if ! defined (YYSIZE_T) && defined (__SIZE_TYPE__)
 # define YYSIZE_T __SIZE_TYPE__
@@ -1188,7 +1195,7 @@ yyreduce:
     }
 
 /* Line 1126 of yacc.c.  */
-#line 1192 "TP.tab.c"
+#line 1199 "TP.tab.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;

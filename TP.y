@@ -1,15 +1,16 @@
 %{
 #include<stdio.h>
-//#include"main.c"
 extern FILE* yyin;
 extern int nbl,nbc;
+#include"TableS.h"
+struct ENTITE *TS;
 %}
-/*%union
+%union
 {
 char *chaine;
 int entier;
 float reel;
-}*/
+}
 %token '{' '}' '(' ')' ':' ';' ',' '+' '*' '-' '/' '[' ']' 
 %token Programme While EXECUT IF Real Integer BOUCLE TAB Calcul CONST EGAL SEP 
 %token <chaine> IDF

@@ -69,7 +69,14 @@
 
 
 #if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
-typedef int YYSTYPE;
+#line 8 "TP.y"
+typedef union YYSTYPE {
+char *chaine;
+int entier;
+float reel;
+} YYSTYPE;
+/* Line 1447 of yacc.c.  */
+#line 80 "TP.tab.h"
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1

@@ -5,6 +5,7 @@
 	#include "TP.tab.h"
 	extern FILE * yyin;
 	int nbl=1,nbc=1;
+	extern YYSTYPE yylval;
 %}
 IDF [A-Z][A-Za-z0-9]*
 ENTIER [-]?[0-9]+
@@ -42,11 +43,11 @@ SEP "||"
 "IF" {nbc=nbc+strlen(yytext); return IF;}
 {IDF} {
     if(strlen(yytext)>12){
-    	printf("erreur! idf %s trop long\n",yytext);}										
-       	nbc=nbc+strlen(yytext); return IDF;
+    	printf("Erreur! l'identifiant %s est trop long (Taille maximum 12 caractere)\n",yytext);}										
+       	nbc=nbc+strlen(yytext); yylval.chaine=strdup(yytext); return IDF;
     }
-{ENTIER} {nbc=nbc+strlen(yytext);return ENTIER;}
-{REEL} {nbc=nbc+strlen(yytext);return REEL;}
+{ENTIER} {nbc=nbc+strlen(yytext);yylval.entier=atoi(yytext); return ENTIER;}
+{REEL} {nbc=nbc+strlen(yytext);yylval.reel=atof(yytext); return REEL;}
 {OPR} {nbc=nbc+strlen(yytext);return OPR; }
 . {printf("Erreur lexicale ligne %d colonne %d ======> %s Inconnu \n",nbl,nbc,yytext);}
 %%
