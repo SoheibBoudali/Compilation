@@ -1,13 +1,10 @@
-#TAB
 #Calcul
+#TAB
+#BOUCLE
 Programme Mp {
-Integer ANTICONSTITUfsdfsd || Y ;
-		Real CONST Z;
-		Z:= 5;
-		E:=1+1;
-		While(X==5){
-		EXECUT 
-		A:=K5;
-		IF(X>6)
-}
+Real A;
+Integer B;
+Integer T [2];
+	T [2]:=B;
+
 }

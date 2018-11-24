@@ -99,9 +99,13 @@
 #line 1 "TP.y"
 
 #include<stdio.h>
-//#include"main.c"
 extern FILE* yyin;
 extern int nbl,nbc;
+#include"TableS.h"
+struct ENTITE *TS;
+struct  BIB *TB;
+char Type[10]="";
+char CurrentType[10]="";
 
 
 /* Enabling traces.  */
@@ -123,14 +127,14 @@ extern int nbl,nbc;
 #endif
 
 #if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
-#line 8 "TP.y"
+#line 12 "TP.y"
 typedef union YYSTYPE {
 char *chaine;
 int entier;
 float reel;
 } YYSTYPE;
 /* Line 196 of yacc.c.  */
-#line 134 "TP.tab.c"
+#line 138 "TP.tab.c"
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
@@ -142,7 +146,7 @@ float reel;
 
 
 /* Line 219 of yacc.c.  */
-#line 146 "TP.tab.c"
+#line 150 "TP.tab.c"
 
 #if ! defined (YYSIZE_T) && defined (__SIZE_TYPE__)
 # define YYSIZE_T __SIZE_TYPE__
@@ -377,10 +381,10 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned char yyrline[] =
 {
-       0,    21,    21,    23,    24,    27,    28,    29,    32,    33,
-      36,    37,    38,    41,    42,    45,    46,    49,    52,    53,
-      56,    57,    60,    61,    62,    65,    68,    69,    70,    73,
-      74,    75,    78,    79,    80,    81,    84,    85,    88,    91
+       0,    25,    25,    27,    28,    31,    35,    39,    45,    46,
+      49,    50,    51,    54,    56,    60,    62,    66,    70,    71,
+      74,    75,    78,    79,    80,    83,    86,    87,    88,    91,
+      92,    93,    96,    97,    98,    99,   102,   103,   111,   114
 };
 #endif
 
@@ -1186,8 +1190,117 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 21 "TP.y"
-    {printf("programme correct syntaxiquement\n");;}
+#line 25 "TP.y"
+    {printf("Programme  syntaxiquement correct\n");;}
+    break;
+
+  case 5:
+#line 31 "TP.y"
+    {if(SearchB(&TB,"Calcul")){printf("Bibliotheque  Calcul déja declarée \n"); return 0;}  
+              else
+                InsertBib(&TB,"Calcul");   
+;}
+    break;
+
+  case 6:
+#line 35 "TP.y"
+    {if(SearchB(&TB,"TAB")) {printf("Bibliotheque TAB déja declarée \n"); return 0;}
+              else
+                InsertBib(&TB,"TAB");   
+;}
+    break;
+
+  case 7:
+#line 39 "TP.y"
+    {if(SearchB(&TB,"BOUCLE")) {printf("Bibliotheque BOUCLE déja declarée \n"); return 0;}
+              else
+                InsertBib(&TB,"BOUCLE");   
+;}
+    break;
+
+  case 11:
+#line 50 "TP.y"
+    {if(!SearchB(&TB,"TAB")){ printf("Erreur ===> Bibliothéque TAB non Déclarée!\n"); return 0;} ;}
+    break;
+
+  case 13:
+#line 55 "TP.y"
+    {if(!Search(&TS,(yyvsp[-2].chaine))) Insert(&TS,(yyvsp[-2].chaine),Type,1,"VAR"); else printf("IDF deja declaré ailleur\n");;}
+    break;
+
+  case 14:
+#line 57 "TP.y"
+    {if(!Search(&TS,(yyvsp[-1].chaine))) Insert(&TS,(yyvsp[-1].chaine),Type,1,"VAR"); else printf("IDF deja declaré ailleur\n");;}
+    break;
+
+  case 15:
+#line 61 "TP.y"
+    {if(!Search(&TS,(yyvsp[-2].chaine))) Insert(&TS,(yyvsp[-2].chaine),Type,1,"CONST");else { printf("Constate deja definie\n");};}
+    break;
+
+  case 16:
+#line 63 "TP.y"
+    {if(!Search(&TS,(yyvsp[-1].chaine))) Insert(&TS,(yyvsp[-1].chaine),Type,1,"CONST");else { printf("Constate deja definie\n");};}
+    break;
+
+  case 17:
+#line 67 "TP.y"
+    {if(!Search(&TS,(yyvsp[-4].chaine))) Insert(&TS,(yyvsp[-4].chaine),"Integer",(yyvsp[-2].entier),"TAB");else { printf("tableau deja declaré\n");};}
+    break;
+
+  case 18:
+#line 70 "TP.y"
+    {strcpy(Type,"Real");;}
+    break;
+
+  case 19:
+#line 71 "TP.y"
+    {strcpy(Type,"Integer");;}
+    break;
+
+  case 22:
+#line 78 "TP.y"
+    {if(!SearchB(&TB,"BOUCLE")){ printf("Erreur ===> Bibliothéque BOUCLE non Déclarée!\n"); return 0;} ;}
+    break;
+
+  case 24:
+#line 80 "TP.y"
+    {if(!SearchB(&TB,"Calcul")){ printf("Erreur ===> Bibliothéque Calcul non Déclarée!\n"); return 0;} ;}
+    break;
+
+  case 32:
+#line 96 "TP.y"
+    {if(!Search(&TS,(yyvsp[0].chaine))) printf("IDF non declaré\n"); if(strcmp(CurrentType,GetType(&TS,(yyvsp[0].chaine)))!=0) printf("Erreur Incompatibilité de type \n");;}
+    break;
+
+  case 33:
+#line 97 "TP.y"
+    {if(!Search(&TS,(yyvsp[-3].chaine))) printf("IDF non declaré\n"); if(strcmp(CurrentType,GetType(&TS,(yyvsp[-3].chaine)))!=0) printf("Erreur Incompatibilité de type \n");;}
+    break;
+
+  case 34:
+#line 98 "TP.y"
+    {if(strcmp(CurrentType,"Integer")!=0) printf("Erreur Incompatibilité de type \n");;}
+    break;
+
+  case 35:
+#line 99 "TP.y"
+    {if(strcmp(CurrentType,"Real")!=0) printf("Erreur Incompatibilité de type \n");;}
+    break;
+
+  case 36:
+#line 102 "TP.y"
+    {  strcpy(CurrentType,GetType(&TS,(yyvsp[0].chaine)));  if(!Search(&TS,(yyvsp[0].chaine))) printf("IDF non declaré\n"); ;}
+    break;
+
+  case 37:
+#line 103 "TP.y"
+    {  strcpy(CurrentType,GetType(&TS,(yyvsp[-3].chaine)));
+                          if(!Search(&TS,(yyvsp[-3].chaine))) {printf("IDF non declaré\n");} 
+                          else{
+                            if(!CheckTab(&TS,(yyvsp[-3].chaine))) printf("IDF n'est pas un tableau\n");
+                            }
+                          ;}
     break;
 
 
@@ -1195,7 +1308,7 @@ yyreduce:
     }
 
 /* Line 1126 of yacc.c.  */
-#line 1199 "TP.tab.c"
+#line 1312 "TP.tab.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1463,7 +1576,7 @@ yyreturn:
 }
 
 
-#line 93 "TP.y"
+#line 117 "TP.y"
 
 int yyerror(char* msg)
 {
@@ -1474,6 +1587,8 @@ int main()
 {
 yyin=fopen("Test.txt","r");
 yyparse();
+Show(&TS);
+ShowB(&TB);
 return 0;
 }
 
