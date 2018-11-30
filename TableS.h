@@ -90,7 +90,20 @@ int CheckTab(struct ENTITE** Tete, char NomE[12]){
 	}
 	return 0;
 }
-
+int CheckTabSize(struct ENTITE** Tete, char NomE[12]){
+	struct ENTITE* Parcourir;
+	Parcourir = *Tete;
+	if (Parcourir!=NULL){
+		while(Parcourir!=NULL){
+			if(strcmp((*Parcourir).NomE,NomE)==0){
+				return (*Parcourir).TailleE;
+				break;
+			}else
+			Parcourir=(*Parcourir).SVT;
+		}
+	}
+	return 0;
+}
 char* GetType (struct ENTITE** Tete, char NomE[12]){
 	struct ENTITE* Parcourir;
 	Parcourir = *Tete;

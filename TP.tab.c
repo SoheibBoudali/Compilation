@@ -297,16 +297,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state. */
 #define YYFINAL  7
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   73
+#define YYLAST   79
 
 /* YYNTOKENS -- Number of terminals. */
 #define YYNTOKENS  32
 /* YYNNTS -- Number of nonterminals. */
 #define YYNNTS  19
 /* YYNRULES -- Number of rules. */
-#define YYNRULES  39
+#define YYNRULES  40
 /* YYNRULES -- Number of states. */
-#define YYNSTATES  83
+#define YYNSTATES  87
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -356,7 +356,8 @@ static const unsigned char yyprhs[] =
        0,     0,     3,    11,    14,    16,    18,    20,    22,    26,
       29,    31,    33,    36,    40,    43,    47,    50,    56,    58,
       60,    63,    65,    67,    69,    71,    76,    80,    84,    86,
-      90,    94,    96,    98,   103,   105,   107,   109,   114,   124
+      90,    94,    96,    98,   103,   105,   107,   109,   114,   124,
+     132
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS. */
@@ -374,17 +375,19 @@ static const yysigned_char yyrhs[] =
       46,    13,    47,    -1,    47,    -1,    28,    -1,    28,    14,
       30,    15,    -1,    30,    -1,    31,    -1,    28,    -1,    28,
       14,    30,    15,    -1,    17,     5,    45,    29,    45,     6,
-       3,    42,     4,    -1,    18,    42,    19,     5,    45,    29,
-      45,     6,    -1
+       3,    42,     4,    -1,    17,     5,    45,     6,     3,    42,
+       4,    -1,    18,    42,    19,     5,    45,    29,    45,     6,
+      -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned char yyrline[] =
 {
        0,    25,    25,    27,    28,    31,    35,    39,    45,    46,
-      49,    50,    51,    54,    56,    60,    62,    66,    70,    71,
-      74,    75,    78,    79,    80,    83,    86,    87,    88,    91,
-      92,    93,    96,    97,    98,    99,   102,   103,   111,   114
+      49,    50,    51,    54,    57,    62,    65,    70,    75,    76,
+      79,    80,    83,    84,    85,    88,    91,    92,    93,    96,
+      97,    98,   101,   108,   120,   126,   129,   132,   142,   143,
+     146
 };
 #endif
 
@@ -421,7 +424,8 @@ static const unsigned char yyr1[] =
        0,    32,    33,    34,    34,    35,    35,    35,    36,    36,
       37,    37,    37,    38,    38,    39,    39,    40,    41,    41,
       42,    42,    43,    43,    43,    44,    45,    45,    45,    46,
-      46,    46,    47,    47,    47,    47,    48,    48,    49,    50
+      46,    46,    47,    47,    47,    47,    48,    48,    49,    49,
+      50
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -430,7 +434,8 @@ static const unsigned char yyr2[] =
        0,     2,     7,     2,     1,     1,     1,     1,     3,     2,
        1,     1,     2,     3,     2,     3,     2,     5,     1,     1,
        2,     1,     1,     1,     1,     4,     3,     3,     1,     3,
-       3,     1,     1,     4,     1,     1,     1,     4,     9,     8
+       3,     1,     1,     4,     1,     1,     1,     4,     9,     7,
+       8
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -444,9 +449,9 @@ static const unsigned char yydefact[] =
        0,     0,     0,     2,    20,     0,     0,    12,    14,     0,
        0,     8,    32,    34,    35,     0,    28,    31,     0,     0,
        0,    16,     0,     0,     0,    13,     0,     0,     0,     0,
-       0,     0,     0,    37,    25,    15,     0,     0,    26,    27,
-       0,    29,    30,     0,    17,    33,     0,     0,     0,     0,
-       0,    39,    38
+       0,     0,     0,     0,    37,    25,    15,     0,     0,     0,
+      26,    27,     0,    29,    30,     0,    17,    33,     0,     0,
+       0,    39,     0,     0,     0,    40,    38
 };
 
 /* YYDEFGOTO[NTERM-NUM]. */
@@ -461,22 +466,22 @@ static const yysigned_char yydefgoto[] =
 #define YYPACT_NINF -35
 static const yysigned_char yypact[] =
 {
-      16,   -35,   -35,   -35,    22,    11,    16,   -35,     4,   -35,
-      38,    25,   -35,   -35,    -2,   -19,    46,    -2,    39,    48,
-      -2,   -35,    28,   -35,   -35,    27,    -6,    25,   -35,   -35,
-       6,    37,    29,   -35,   -35,     6,    -4,   -35,   -35,    30,
-      34,   -35,    43,   -35,   -35,    -5,    31,   -35,    53,    49,
-      23,   -35,    27,    50,     3,   -35,    33,     6,     6,     6,
-       6,     6,     6,   -35,   -35,   -35,    58,    52,    31,    31,
-       7,   -35,   -35,     0,   -35,   -35,    65,     6,    -2,     8,
-      66,   -35,   -35
+      17,   -35,   -35,   -35,    23,    -6,    17,   -35,    15,   -35,
+      30,    27,   -35,   -35,    -1,   -21,    40,    -1,    37,    51,
+      -1,   -35,    32,   -35,   -35,    28,    -3,    27,   -35,   -35,
+       7,    38,    29,   -35,   -35,     7,     1,   -35,   -35,    33,
+      34,   -35,    46,   -35,   -35,    -4,    31,   -35,    56,    49,
+      10,   -35,    28,    52,     5,   -35,    36,    65,     7,     7,
+       7,     7,     7,     7,   -35,   -35,   -35,    61,    55,    -1,
+      31,    31,     9,   -35,   -35,     2,   -35,   -35,    67,    69,
+       7,   -35,    -1,    24,    70,   -35,   -35
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yysigned_char yypgoto[] =
 {
-     -35,   -35,    63,   -35,    44,   -35,    32,    21,   -35,   -35,
-     -17,   -35,   -35,   -34,   -10,   -11,   -35,   -35,   -35
+     -35,   -35,    71,   -35,    48,   -35,    39,    21,   -35,   -35,
+     -17,   -35,   -35,   -34,    -9,    -8,   -35,   -35,   -35
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -486,26 +491,26 @@ static const yysigned_char yypgoto[] =
 #define YYTABLE_NINF -1
 static const unsigned char yytable[] =
 {
-      31,    50,    38,    34,    51,    57,    25,    58,    39,    26,
-      57,    38,    58,    76,    81,    16,    17,    57,    57,    58,
-      58,    40,     7,    52,    59,    70,    18,     8,    73,    77,
-      40,    64,    10,    57,    42,    58,    43,    44,     1,     2,
-       3,    11,    60,    79,    61,    12,    13,    68,    69,    71,
-      72,    30,    33,    32,    35,    36,    48,    56,    62,    49,
-      53,    80,    54,    67,    63,    66,    74,    75,    78,     9,
-      82,    41,    55,    65
+      31,    50,    57,    34,    25,    38,    58,    26,    59,    51,
+       8,    39,    58,    38,    59,    79,    16,    17,    65,    58,
+      58,    59,    59,     7,    40,    60,    72,    18,    52,    75,
+      85,    80,    40,    11,    58,    42,    59,    43,    44,     1,
+       2,     3,    61,    10,    62,    30,    83,    12,    13,    70,
+      71,    32,    78,    73,    74,    33,    36,    48,    35,    49,
+      56,    63,    54,    53,    64,    84,    68,    67,    69,    76,
+      77,    81,    82,    66,    86,    41,     0,     9,     0,    55
 };
 
-static const unsigned char yycheck[] =
+static const yysigned_char yycheck[] =
 {
-      17,    35,     8,    20,     8,    10,    25,    12,    14,    28,
-      10,     8,    12,     6,     6,    17,    18,    10,    10,    12,
-      12,    27,     0,    27,    29,    59,    28,    16,    62,    29,
-      27,     8,    28,    10,    28,    12,    30,    31,    22,    23,
-      24,     3,    11,    77,    13,    20,    21,    57,    58,    60,
-      61,     5,     4,    14,    26,    28,    19,    14,     5,    30,
-      30,    78,    28,    30,    15,    15,     8,    15,     3,     6,
-       4,    27,    40,    52
+      17,    35,     6,    20,    25,     8,    10,    28,    12,     8,
+      16,    14,    10,     8,    12,     6,    17,    18,     8,    10,
+      10,    12,    12,     0,    27,    29,    60,    28,    27,    63,
+       6,    29,    27,     3,    10,    28,    12,    30,    31,    22,
+      23,    24,    11,    28,    13,     5,    80,    20,    21,    58,
+      59,    14,    69,    61,    62,     4,    28,    19,    26,    30,
+      14,     5,    28,    30,    15,    82,    30,    15,     3,     8,
+      15,     4,     3,    52,     4,    27,    -1,     6,    -1,    40
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -517,10 +522,10 @@ static const unsigned char yystos[] =
       43,    44,    48,    49,    50,    25,    28,    37,    38,    40,
        5,    42,    14,     4,    42,    26,    28,    39,     8,    14,
       27,    36,    28,    30,    31,    45,    46,    47,    19,    30,
-      45,     8,    27,    30,    28,    38,    14,    10,    12,    29,
-      11,    13,     5,    15,     8,    39,    15,    30,    46,    46,
-      45,    47,    47,    45,     8,    15,     6,    29,     3,    45,
-      42,     6,     4
+      45,     8,    27,    30,    28,    38,    14,     6,    10,    12,
+      29,    11,    13,     5,    15,     8,    39,    15,    30,     3,
+      46,    46,    45,    47,    47,    45,     8,    15,    42,     6,
+      29,     4,     3,    45,    42,     6,     4
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1196,111 +1201,152 @@ yyreduce:
 
   case 5:
 #line 31 "TP.y"
-    {if(SearchB(&TB,"Calcul")){printf("Bibliotheque  Calcul déja declarée \n"); return 0;}  
-              else
+    { if(SearchB(&TB,"Calcul")){printf("Bibliotheque  Calcul déja declarée \n"); 
+                }else
                 InsertBib(&TB,"Calcul");   
-;}
+              ;}
     break;
 
   case 6:
 #line 35 "TP.y"
-    {if(SearchB(&TB,"TAB")) {printf("Bibliotheque TAB déja declarée \n"); return 0;}
-              else
+    { if(SearchB(&TB,"TAB")) {printf("Bibliotheque TAB déja declarée \n"); 
+                }else
                 InsertBib(&TB,"TAB");   
-;}
+              ;}
     break;
 
   case 7:
 #line 39 "TP.y"
-    {if(SearchB(&TB,"BOUCLE")) {printf("Bibliotheque BOUCLE déja declarée \n"); return 0;}
-              else
-                InsertBib(&TB,"BOUCLE");   
-;}
+    { if(SearchB(&TB,"BOUCLE")) {printf("Bibliotheque BOUCLE déja declarée \n");
+                }else
+                InsertBib(&TB,"BOUCLE");
+              ;}
     break;
 
   case 11:
 #line 50 "TP.y"
-    {if(!SearchB(&TB,"TAB")){ printf("Erreur ===> Bibliothéque TAB non Déclarée!\n"); return 0;} ;}
+    { if(!SearchB(&TB,"TAB")) printf("Erreur ===> Bibliothéque TAB non Déclarée!\n"); ;}
     break;
 
   case 13:
-#line 55 "TP.y"
-    {if(!Search(&TS,(yyvsp[-2].chaine))) Insert(&TS,(yyvsp[-2].chaine),Type,1,"VAR"); else printf("IDF deja declaré ailleur\n");;}
+#line 54 "TP.y"
+    { if(!Search(&TS,(yyvsp[-2].chaine))) Insert(&TS,(yyvsp[-2].chaine),Type,1,"VAR"); 
+                          else printf("IDF deja declaré ailleur\n");
+                        ;}
     break;
 
   case 14:
 #line 57 "TP.y"
-    {if(!Search(&TS,(yyvsp[-1].chaine))) Insert(&TS,(yyvsp[-1].chaine),Type,1,"VAR"); else printf("IDF deja declaré ailleur\n");;}
+    { if(!Search(&TS,(yyvsp[-1].chaine))) Insert(&TS,(yyvsp[-1].chaine),Type,1,"VAR"); 
+                    else printf("IDF deja declaré ailleur\n");
+                  ;}
     break;
 
   case 15:
-#line 61 "TP.y"
-    {if(!Search(&TS,(yyvsp[-2].chaine))) Insert(&TS,(yyvsp[-2].chaine),Type,1,"CONST");else { printf("Constate deja definie\n");};}
+#line 62 "TP.y"
+    { if(!Search(&TS,(yyvsp[-2].chaine))) Insert(&TS,(yyvsp[-2].chaine),Type,1,"CONST");
+                              else printf("Constate deja definie\n");
+                            ;}
     break;
 
   case 16:
-#line 63 "TP.y"
-    {if(!Search(&TS,(yyvsp[-1].chaine))) Insert(&TS,(yyvsp[-1].chaine),Type,1,"CONST");else { printf("Constate deja definie\n");};}
+#line 65 "TP.y"
+    { if(!Search(&TS,(yyvsp[-1].chaine))) Insert(&TS,(yyvsp[-1].chaine),Type,1,"CONST");
+                    else printf("Constate deja definie\n");
+                  ;}
     break;
 
   case 17:
-#line 67 "TP.y"
-    {if(!Search(&TS,(yyvsp[-4].chaine))) Insert(&TS,(yyvsp[-4].chaine),"Integer",(yyvsp[-2].entier),"TAB");else { printf("tableau deja declaré\n");};}
+#line 70 "TP.y"
+    { if(!Search(&TS,(yyvsp[-4].chaine))) Insert(&TS,(yyvsp[-4].chaine),Type,(yyvsp[-2].entier),"TAB");
+                                  else  printf("tableau deja declaré\n");
+                                ;}
     break;
 
   case 18:
-#line 70 "TP.y"
+#line 75 "TP.y"
     {strcpy(Type,"Real");;}
     break;
 
   case 19:
-#line 71 "TP.y"
+#line 76 "TP.y"
     {strcpy(Type,"Integer");;}
     break;
 
   case 22:
-#line 78 "TP.y"
-    {if(!SearchB(&TB,"BOUCLE")){ printf("Erreur ===> Bibliothéque BOUCLE non Déclarée!\n"); return 0;} ;}
+#line 83 "TP.y"
+    { if(!SearchB(&TB,"BOUCLE")) printf("Erreur ===> Bibliothéque BOUCLE non Déclarée!\n");;}
     break;
 
   case 24:
-#line 80 "TP.y"
-    {if(!SearchB(&TB,"Calcul")){ printf("Erreur ===> Bibliothéque Calcul non Déclarée!\n"); return 0;} ;}
+#line 85 "TP.y"
+    { if(!SearchB(&TB,"Calcul")) printf("Erreur ===> Bibliothéque Calcul non Déclarée!\n");;}
+    break;
+
+  case 25:
+#line 88 "TP.y"
+    {strcpy(CurrentType,"");;}
     break;
 
   case 32:
-#line 96 "TP.y"
-    {if(!Search(&TS,(yyvsp[0].chaine))) printf("IDF non declaré\n"); if(strcmp(CurrentType,GetType(&TS,(yyvsp[0].chaine)))!=0) printf("Erreur Incompatibilité de type \n");;}
+#line 101 "TP.y"
+    { if(!Search(&TS,(yyvsp[0].chaine))) printf("IDF non declaré\n"); 
+            if(strcmp(CurrentType,"")!=0){
+              if(strcmp(CurrentType,GetType(&TS,(yyvsp[0].chaine)))!=0) {printf("Erreur Incompatibilité de type 1\n");}
+            }else{
+              strcpy(CurrentType,GetType(&TS,(yyvsp[0].chaine)));
+            } 
+          ;}
     break;
 
   case 33:
-#line 97 "TP.y"
-    {if(!Search(&TS,(yyvsp[-3].chaine))) printf("IDF non declaré\n"); if(strcmp(CurrentType,GetType(&TS,(yyvsp[-3].chaine)))!=0) printf("Erreur Incompatibilité de type \n");;}
+#line 108 "TP.y"
+    { if(!Search(&TS,(yyvsp[-3].chaine))) {
+                            printf("IDF non declaré\n");
+                          }else{
+                            if(!CheckTab(&TS,(yyvsp[-3].chaine))) printf("IDF n'est pas un tableau\n");
+                          }
+                          if((yyvsp[-1].entier)>CheckTabSize(&TS,(yyvsp[-3].chaine))) printf("Debordement \n");
+                          if(strcmp(CurrentType,"")!=0){
+                            if(strcmp(CurrentType,GetType(&TS,(yyvsp[-3].chaine)))!=0) printf("Erreur Incompatibilité de type 2 \n");
+                          }else{
+                            strcpy(CurrentType,GetType(&TS,(yyvsp[-3].chaine)));
+                          }
+                        ;}
     break;
 
   case 34:
-#line 98 "TP.y"
-    {if(strcmp(CurrentType,"Integer")!=0) printf("Erreur Incompatibilité de type \n");;}
+#line 120 "TP.y"
+    { if(strcmp(CurrentType,"")!=0) {
+                  if(strcmp(CurrentType,"Integer")!=0) {printf("Erreur Incompatibilité de type 1\n");}
+                }else{
+                  strcpy(CurrentType,"Integer");
+                }  
+              ;}
     break;
 
   case 35:
-#line 99 "TP.y"
+#line 126 "TP.y"
     {if(strcmp(CurrentType,"Real")!=0) printf("Erreur Incompatibilité de type \n");;}
     break;
 
   case 36:
-#line 102 "TP.y"
-    {  strcpy(CurrentType,GetType(&TS,(yyvsp[0].chaine)));  if(!Search(&TS,(yyvsp[0].chaine))) printf("IDF non declaré\n"); ;}
+#line 129 "TP.y"
+    { strcpy(CurrentType,GetType(&TS,(yyvsp[0].chaine)));  
+            if(!Search(&TS,(yyvsp[0].chaine))) printf("IDF non declaré\n"); 
+          ;}
     break;
 
   case 37:
-#line 103 "TP.y"
-    {  strcpy(CurrentType,GetType(&TS,(yyvsp[-3].chaine)));
-                          if(!Search(&TS,(yyvsp[-3].chaine))) {printf("IDF non declaré\n");} 
-                          else{
+#line 132 "TP.y"
+    {  strcpy(CurrentType,GetType(&TS,(yyvsp[-3].chaine))); 
+                          if((yyvsp[-1].entier)>CheckTabSize(&TS,(yyvsp[-3].chaine))) printf("Debordement \n");
+                          if(!Search(&TS,(yyvsp[-3].chaine))) {
+                            printf("IDF non declaré\n");
+                          }else{
                             if(!CheckTab(&TS,(yyvsp[-3].chaine))) printf("IDF n'est pas un tableau\n");
-                            }
-                          ;}
+                          }
+                        ;}
     break;
 
 
@@ -1308,7 +1354,7 @@ yyreduce:
     }
 
 /* Line 1126 of yacc.c.  */
-#line 1312 "TP.tab.c"
+#line 1358 "TP.tab.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1576,7 +1622,7 @@ yyreturn:
 }
 
 
-#line 117 "TP.y"
+#line 149 "TP.y"
 
 int yyerror(char* msg)
 {

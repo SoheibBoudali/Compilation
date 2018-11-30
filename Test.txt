@@ -2,9 +2,13 @@
 #TAB
 #BOUCLE
 Programme Mp {
-Real A;
-Integer B;
-Integer T [2];
-	T [2]:=B;
-
+Real A ;
+Real B;
+Integer C;
+Real T[5];
+While (1){
+EXECUT 
+	A:=A;
+	IF( A > T[7])
+	}
 }
