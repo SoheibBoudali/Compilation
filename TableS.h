@@ -8,10 +8,11 @@ typedef struct ENTITE {
     char TypeE[10];
     int TailleE;
   	char State[10];
+  	int Position;
     struct ENTITE* SVT;
 };
 
-void Insert(struct ENTITE** Tete,char NomE[12],char TypeE[12],int TailleE,char State[10]){
+void Insert(struct ENTITE** Tete,char NomE[12],char TypeE[12],int TailleE,char State[10],int Position){
  	struct ENTITE* Parcourir;
     Parcourir=*Tete;
     struct ENTITE* NewE;
@@ -25,6 +26,7 @@ void Insert(struct ENTITE** Tete,char NomE[12],char TypeE[12],int TailleE,char S
 	    strcpy((*NewE).TypeE,TypeE);
 	    (*NewE).TailleE=TailleE;
 	    strcpy((*NewE).State,State);
+	    (*NewE).Position=Position;
 	    (*NewE).SVT=NULL;
 	    (*Parcourir).SVT=NewE;
 	}else{
@@ -33,6 +35,7 @@ void Insert(struct ENTITE** Tete,char NomE[12],char TypeE[12],int TailleE,char S
 	    strcpy((**Tete).TypeE,TypeE);
 	    (**Tete).TailleE=TailleE;
 	    strcpy((**Tete).State,State);
+	    (**Tete).Position=Position;
 	    (**Tete).SVT=NULL;
    }
 }
@@ -118,14 +121,27 @@ char* GetType (struct ENTITE** Tete, char NomE[12]){
 	}
 	return "";
 }
-
-
+int GetLine(struct ENTITE** Tete , char NomE [12]){
+	struct ENTITE* Parcourir;
+	Parcourir = *Tete;
+	if (Parcourir!=NULL){
+		while(Parcourir!=NULL){
+			if(strcmp((*Parcourir).NomE,NomE)==0){
+				return (*Parcourir).Position;
+				break;
+			}else
+				Parcourir=(*Parcourir).SVT;
+		}	
+	}
+	return 0;
+}
 typedef struct BIB {
     char NomB[12];
+    int Position;
     struct BIB* SVTB;
 };
 
-void InsertBib(struct BIB** TeteB, char NomB[20]){
+void InsertBib(struct BIB** TeteB, char NomB[20] , int Position){
 	struct BIB* ParcourirB;
 	ParcourirB=*TeteB;
 	struct  BIB* NewB;
@@ -136,11 +152,13 @@ void InsertBib(struct BIB** TeteB, char NomB[20]){
 	    }
 	    NewB=malloc(sizeof(struct BIB));
 	    strcpy((*NewB).NomB,NomB);
+	    (*NewB).Position=Position;
 	    (*NewB).SVTB=NULL;
 	    (*ParcourirB).SVTB=NewB;
 	}else{
 	   	*TeteB=malloc(sizeof(struct BIB));
 	    strcpy((**TeteB).NomB,NomB);
+	    (**TeteB).Position=Position;
 	    (**TeteB).SVTB=NULL;
    }
 }

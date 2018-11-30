@@ -1,7 +1,7 @@
 %{
 #include<stdio.h>
 extern FILE* yyin;
-extern int nbl,nbc;
+extern int NL,NC;
 #include"TableS.h"
 struct ENTITE *TS;
 struct  BIB *TB;
@@ -28,17 +28,17 @@ Bibliotheque : Bib Bibliotheque
             |  Bib 
 ;
 
-Bib : Calcul  { if(SearchB(&TB,"Calcul")){printf("Bibliotheque  Calcul déja declarée \n"); 
+Bib : Calcul  { if(SearchB(&TB,"Calcul")){printf("Erreur a la ligne %d : Bibliotheque  Calcul déja declarée  \n", NL); 
                 }else
-                InsertBib(&TB,"Calcul");   
+                InsertBib(&TB,"Calcul",NL);   
               }
-     | TAB    { if(SearchB(&TB,"TAB")) {printf("Bibliotheque TAB déja declarée \n"); 
+     | TAB    { if(SearchB(&TB,"TAB")) {printf("Erreur a la ligne %d : Bibliotheque TAB déja declarée \n",NL); 
                 }else
-                InsertBib(&TB,"TAB");   
+                InsertBib(&TB,"TAB",NL);   
               }
-     | BOUCLE { if(SearchB(&TB,"BOUCLE")) {printf("Bibliotheque BOUCLE déja declarée \n");
+     | BOUCLE { if(SearchB(&TB,"BOUCLE")) {printf("Erreur a la ligne %d : Bibliotheque BOUCLE déja declarée \n",NL);
                 }else
-                InsertBib(&TB,"BOUCLE");
+                InsertBib(&TB,"BOUCLE",NL);
               }
 ;
 
@@ -47,28 +47,43 @@ DECLARATION : TYPE  Val DECLARATION
 ;
 
 Val : DecVar
-  | DecTab  { if(!SearchB(&TB,"TAB")) printf("Erreur ===> Bibliothéque TAB non Déclarée!\n"); };
+  | DecTab  { if(!SearchB(&TB,"TAB")) printf("Erreur a la ligne %d : Bibliothéque TAB non Déclarée!\n",NL); };
   | CONST DecConst
 ;
 
-DecVar: IDF SEP DecVar  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"VAR"); 
-                          else printf("IDF deja declaré ailleur\n");
+DecVar: IDF SEP DecVar  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"VAR",NL); 
+                          else{ 
+                            if(GetLine(&TS,$1)==NL) printf("Erreur a la ligne %d : Double declaration d'IDF dans la meme ligne %d \n",NL,NL);
+                            else printf("Erreur a la ligne %d : IDF deja declaré a la ligne %d \n",NL,GetLine(&TS,$1));
+                          }
                         }      
-       | IDF ';'  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"VAR"); 
-                    else printf("IDF deja declaré ailleur\n");
+       | IDF ';'  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"VAR",NL); 
+                      else{ 
+                        if(GetLine(&TS,$1)==NL) printf("Erreur a la ligne %d : Double declaration d'IDF dans la meme ligne %d \n",NL,NL);
+                        else printf("Erreur a la ligne %d : IDF deja declaré a la ligne %d \n",NL,GetLine(&TS,$1));
+                      }
                   }       
 ;
  
-DecConst: IDF SEP DecConst  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"CONST");
-                              else printf("Constate deja definie\n");
+DecConst: IDF SEP DecConst  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"CONST",NL);
+                              else{
+                                if(GetLine(&TS,$1)==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
+                                else printf("Erreur a la ligne %d : Constate deja definie a la ligne %d \n",NL,GetLine(&TS,$1));
+                              }
                             }
-        | IDF ';' { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"CONST");
-                    else printf("Constate deja definie\n");
+        | IDF ';' { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"CONST",NL);
+                    else{
+                      if(GetLine(&TS,$1)==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
+                      else printf("Erreur a la ligne %d : Constate deja definiea la ligne %d \n",NL,GetLine(&TS,$1));
+                    }
                   }      
 ;
 
-DecTab: IDF '[' ENTIER ']' ';'  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,$3,"TAB");
-                                  else  printf("tableau deja declaré\n");
+DecTab: IDF '[' ENTIER ']' ';'  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,$3,"TAB",NL);
+                                  else{
+                                    if(GetLine(&TS,$1)==NL) printf("Erreur a la ligne %d : Double declaration du tableau dans la meme ligne %d \n",NL,NL);
+                                    else  printf("Erreur a la ligne %d : Tableau deja declaré\n",NL);
+                                  }
                                 }    
 ;
 
@@ -80,9 +95,9 @@ INSTRUCTION: TypeInstruction INSTRUCTION
     |TypeInstruction
 ;
 
-TypeInstruction: LOOP { if(!SearchB(&TB,"BOUCLE")) printf("Erreur ===> Bibliothéque BOUCLE non Déclarée!\n");} 
+TypeInstruction: LOOP { if(!SearchB(&TB,"BOUCLE")) printf("Erreur a la ligne %d : Bibliothéque BOUCLE non Déclarée!\n",NL);} 
                 | CONDITION 
-                | AFFECTATION { if(!SearchB(&TB,"Calcul")) printf("Erreur ===> Bibliothéque Calcul non Déclarée!\n");}
+                | AFFECTATION { if(!SearchB(&TB,"Calcul")) printf("Erreur a la ligne %d : Bibliothéque Calcul non Déclarée!\n",NL);}
 ;
 
 AFFECTATION : IDFA EGAL EXP ';' {strcpy(CurrentType,"");} 
@@ -98,33 +113,33 @@ EXPPRIO : EXPPRIO '*' AFF
         | AFF
 ;
 
-AFF : IDF { if(!Search(&TS,$1)) printf("IDF non declaré\n"); 
+AFF : IDF { if(!Search(&TS,$1)) printf("Erreur a la ligne %d : IDF non declaré\n " ,NL); 
             if(strcmp(CurrentType,"")!=0){
-              if(strcmp(CurrentType,GetType(&TS,$1))!=0) {printf("Erreur Incompatibilité de type \n");}
+              if(strcmp(CurrentType,GetType(&TS,$1))!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
             }else{
               strcpy(CurrentType,GetType(&TS,$1));
             } 
           } 
     | IDF '['ENTIER']' { if(!Search(&TS,$1)) {
-                            printf("IDF non declaré\n");
+                            printf("Erreur a la ligne %d :IDF non declaré\n",NL);
                           }else{
-                            if(!CheckTab(&TS,$1)) printf("IDF n'est pas un tableau\n");
+                            if(!CheckTab(&TS,$1)) printf("Erreur a la ligne %d : IDF n'est pas un tableau\n",NL);
                           }
-                          if($3>CheckTabSize(&TS,$1)) printf("Debordement \n");
+                          if($3>CheckTabSize(&TS,$1)) printf("Erreur a la ligne %d : Debordement \n",NL);
                           if(strcmp(CurrentType,"")!=0){
-                            if(strcmp(CurrentType,GetType(&TS,$1))!=0) printf("Erreur Incompatibilité de type \n");
+                            if(strcmp(CurrentType,GetType(&TS,$1))!=0) printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);
                           }else{
                             strcpy(CurrentType,GetType(&TS,$1));
                           }
                         } 
     | ENTIER { if(strcmp(CurrentType,"")!=0) {
-                  if(strcmp(CurrentType,"Integer")!=0) {printf("Erreur Incompatibilité de type \n");}
+                  if(strcmp(CurrentType,"Integer")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
                 }else{
                   strcpy(CurrentType,"Integer");
                 }  
               }
     | REEL  { if(strcmp(CurrentType,"")!=0) {
-                if(strcmp(CurrentType,"Real")!=0) {printf("Erreur Incompatibilité de type \n");}
+                if(strcmp(CurrentType,"Real")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
                 }else{
                   strcpy(CurrentType,"Real");
               }  
@@ -132,14 +147,14 @@ AFF : IDF { if(!Search(&TS,$1)) printf("IDF non declaré\n");
 ;
 
 IDFA: IDF { strcpy(CurrentType,GetType(&TS,$1));  
-            if(!Search(&TS,$1)) printf("IDF non declaré\n"); 
+            if(!Search(&TS,$1)) printf("Erreur a la ligne %d : IDF non declaré\n",NL); 
           } 
     | IDF '['ENTIER']'  { strcpy(CurrentType,GetType(&TS,$1)); 
-                          if($3>CheckTabSize(&TS,$1)) printf("Debordement \n");
+                          if($3>CheckTabSize(&TS,$1)) printf("Erreur a la ligne %d : Debordement \n",NL);
                           if(!Search(&TS,$1)) {
-                            printf("IDF non declaré\n");
+                            printf("Erreur a la ligne %d : IDF non declaré\n",NL);
                           }else{
-                            if(!CheckTab(&TS,$1)) printf("IDF n'est pas un tableau\n");
+                            if(!CheckTab(&TS,$1)) printf("Erreur a la ligne %d : IDF n'est pas un tableau\n" , NL);
                           }
                         }
 ;
@@ -154,7 +169,7 @@ CONDITION: EXECUT INSTRUCTION IF '(' EXP OPR EXP ')'
 %%
 int yyerror(char* msg)
 {
-printf("Erreur syntaxique a la ligne %d colonne %d\n",nbl,nbc);
+printf("Erreur syntaxique a la ligne %d colonne %d\n",NL,NC);
 return 1;
 }
 int main()

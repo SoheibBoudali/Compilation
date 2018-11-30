@@ -1,14 +1,16 @@
 #Calcul
 #TAB
 #BOUCLE
+#Calcul
 Programme Mp {
-Real A ;
+Real A || A;
 Real B;
+Real A;
 Integer C;
 Real T[5];
 While (1){
 EXECUT 
-	A:=A;
+	A:= 5.6 - -6.5;
 	IF( A > T[7])
 	}
 }

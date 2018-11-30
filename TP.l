@@ -4,52 +4,52 @@
 	#include<stdlib.h>
 	#include "TP.tab.h"
 	extern FILE * yyin;
-	int nbl=1,nbc=1;
+	int NL=1,NC=1;
 	extern YYSTYPE yylval;
 %}
 IDF [A-Z][A-Za-z0-9]*
 ENTIER [-]?[0-9]+
-REEL   ENTIER"."[0-9]+
+REEL   [-]?[0-9]+[/.][0-9]+
 OPR  ("=="|"<"|">"|"<="|">="|"!=")
 SEP "||"
 %%
-{SEP} {nbc=nbc+2; return SEP;}
-" " {nbc++;}
-"//"(.)*"//" {nbc=nbc+strlen(yytext);}
-":=" {nbc=nbc+2; return EGAL;}
-"]" {nbc++; return ']';}
-"[" {nbc++; return '[';}
-"{" {nbc++;return'{';}
-"}" {nbc++;return'}';}
-"," {nbc++; return ',';}
-"+" {nbc++; return '+';}
-"-" {nbc++; return '-'; }
-"*" {nbc++; return '*'; }
-"/" {nbc++; return '/'; }
-"#BOUCLE\n" {nbc=nbc+7;nbl++;nbc=1;return BOUCLE;}
-"#TAB\n" {nbc=nbc+strlen(yytext);nbl++;nbc=1;return TAB;}
-"#Calcul\n" {nbc=nbc+strlen(yytext);nbl++;nbc=1;return Calcul;}
-"(" {nbc++;return '(';}
-")" {nbc++;return ')';}
-";" {nbc++;return ';';}
-"\n" {nbc=1;nbl++;}
-"\t" {nbc=nbc+1;}
-"Programme" {nbc=nbc+strlen(yytext);return Programme;}
-"Real" {nbc=nbc+strlen(yytext); return Real;}
-"Integer" {nbc=nbc+strlen(yytext);return Integer;}
-"CONST" {nbc=nbc+strlen(yytext);return CONST;}
-"While" {nbc=nbc+strlen(yytext);return While;}
-"EXECUT" {nbc=nbc+strlen(yytext); return EXECUT;}
-"IF" {nbc=nbc+strlen(yytext); return IF;}
+{SEP} {NC=NC+2; return SEP;}
+" " {NC++;}
+"//"(.)*"//" {NC=NC+strlen(yytext);}
+":=" {NC=NC+2; return EGAL;}
+"]" {NC++; return ']';}
+"[" {NC++; return '[';}
+"{" {NC++;return'{';}
+"}" {NC++;return'}';}
+"," {NC++; return ',';}
+"+" {NC++; return '+';}
+"-" {NC++; return '-'; }
+"*" {NC++; return '*'; }
+"/" {NC++; return '/'; }
+"#BOUCLE\n" {NC=NC+7;NL++;NC=1;return BOUCLE;}
+"#TAB\n" {NC=NC+strlen(yytext);NL++;NC=1;return TAB;}
+"#Calcul\n" {NC=NC+strlen(yytext);NL++;NC=1;return Calcul;}
+"(" {NC++;return '(';}
+")" {NC++;return ')';}
+";" {NC++;return ';';}
+"\n" {NC=1;NL++;}
+"\t" {NC=NC+1;}
+"Programme" {NC=NC+strlen(yytext);return Programme;}
+"Real" {NC=NC+strlen(yytext); return Real;}
+"Integer" {NC=NC+strlen(yytext);return Integer;}
+"CONST" {NC=NC+strlen(yytext);return CONST;}
+"While" {NC=NC+strlen(yytext);return While;}
+"EXECUT" {NC=NC+strlen(yytext); return EXECUT;}
+"IF" {NC=NC+strlen(yytext); return IF;}
 {IDF} {
     if(strlen(yytext)>12){
     	printf("Erreur! l'identifiant %s est trop long (Taille maximum 12 caractere)\n",yytext);}										
-       	nbc=nbc+strlen(yytext); yylval.chaine=strdup(yytext); return IDF;
+       	NC=NC+strlen(yytext); yylval.chaine=strdup(yytext); return IDF;
     }
-{ENTIER} {nbc=nbc+strlen(yytext);yylval.entier=atoi(yytext); return ENTIER;}
-{REEL} {nbc=nbc+strlen(yytext);yylval.reel=atof(yytext); return REEL;}
-{OPR} {nbc=nbc+strlen(yytext);return OPR; }
-. {printf("Erreur lexicale ligne %d colonne %d ======> %s Inconnu \n",nbl,nbc,yytext);}
+{ENTIER} {NC=NC+strlen(yytext);yylval.entier=atoi(yytext); return ENTIER;}
+{REEL} {NC=NC+strlen(yytext);yylval.reel=atof(yytext); return REEL;}
+{OPR} {NC=NC+strlen(yytext);return OPR; }
+. {printf("Erreur lexicale ligne %d colonne %d ======> %s Inconnu \n",NL,NC,yytext);}
 %%
 	int yywrap()
 	{
