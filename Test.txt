@@ -4,13 +4,6 @@
 #Calcul
 Programme Mp {
 Real A || A;
-Real B;
-Real A;
-Integer C;
-Real T[5];
-While (1){
-EXECUT 
-	A:= 5.6 - -6.5;
-	IF( A > T[7])
-	}
+A:=A + 6.5+A+7.5/5.2+6.0;
+A:= 5.5*9.2+5.2*5.0+0.0;
 }

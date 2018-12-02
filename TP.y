@@ -3,16 +3,24 @@
 extern FILE* yyin;
 extern int NL,NC;
 #include"TableS.h"
+#include"Quad.c"
+#include"Pile.c"
 struct ENTITE *TS;
 struct  BIB *TB;
 char Type[10]="";
 char CurrentType[10]="";
+struct QUAD *Q=NULL;
+int num=1;
+int temp=1;
+char * tempc;
+struct PILE *Pile;
 %}
 %union
 {
 char *chaine;
 int entier;
 float reel;
+struct s {char * val; int type;}s;
 }
 %token '{' '}' '(' ')' ':' ';' ',' '+' '*' '-' '/' '[' ']' 
 %token Programme While EXECUT IF Real Integer BOUCLE TAB Calcul CONST EGAL SEP 
@@ -20,9 +28,10 @@ float reel;
 %token <chaine> OPR
 %token <entier> ENTIER
 %token <reel> REEL
+%type <s> IDFA EXP EXPPRIO AFF
 %%
 
-Start : Bibliotheque Programme IDF '{' DECLARATION  INSTRUCTION '}' {printf("Programme  syntaxiquement correct\n");};
+Start : Bibliotheque Programme IDF '{' DECLARATION  INSTRUCTION '}' {printf("Programme  syntaxiquement correct\n");ShowQ(&Q);};
 
 Bibliotheque : Bib Bibliotheque 
             |  Bib 
@@ -100,17 +109,44 @@ TypeInstruction: LOOP { if(!SearchB(&TB,"BOUCLE")) printf("Erreur a la ligne %d 
                 | AFFECTATION { if(!SearchB(&TB,"Calcul")) printf("Erreur a la ligne %d : Bibliothéque Calcul non Déclarée!\n",NL);}
 ;
 
-AFFECTATION : IDFA EGAL EXP ';' {strcpy(CurrentType,"");} 
+AFFECTATION : IDFA EGAL EXP ';' { strcpy(CurrentType,"");
+                                  InsertQ(&Q,"=",$3.val,"",$1.val,num);
+                                  num++;
+                                }
 ;
 
-EXP : EXP '+' EXPPRIO 
-     | EXP '-' EXPPRIO 
-     | EXPPRIO 
+EXP : EXP  '+'  EXPPRIO { char* tempc=malloc(sizeof(10));
+                          sprintf(tempc,"T%d",temp);
+                          temp++;
+                          InsertQ(&Q,"+",$1.val,$3.val,tempc,num);
+                          num++;
+                          strcpy($$.val,tempc);
+                        }
+     | EXP '-' EXPPRIO {  char* tempc=malloc(sizeof(10));   
+                          sprintf(tempc,"T%d",temp);
+                          temp++; 
+                          InsertQ(&Q,"-",$1.val,$3.val,tempc,num);
+                          num++;  
+                          strcpy($$.val,tempc);
+                        }
+     | EXPPRIO { strcpy($$.val,$1.val); }
 ;
 
-EXPPRIO : EXPPRIO '*' AFF  
-        | EXPPRIO '/' AFF 
-        | AFF
+EXPPRIO : EXPPRIO '*' AFF { char* tempc=malloc(sizeof(10));   
+                            sprintf(tempc,"T%d",temp);
+                            temp++; 
+                            InsertQ(&Q,"*",$1.val,$3.val,tempc,num);
+                            num++;  
+                            strcpy($$.val,tempc);
+                          }
+        | EXPPRIO '/' AFF { char* tempc=malloc(sizeof(10));   
+                            sprintf(tempc,"T%d",temp);
+                            temp++; 
+                            InsertQ(&Q,"/",$1.val,$3.val,tempc,num);
+                            num++;  
+                            strcpy($$.val,tempc);
+                          } 
+        | AFF { strcpy($$.val,$1.val);}
 ;
 
 AFF : IDF { if(!Search(&TS,$1)) printf("Erreur a la ligne %d : IDF non declaré\n " ,NL); 
@@ -119,6 +155,7 @@ AFF : IDF { if(!Search(&TS,$1)) printf("Erreur a la ligne %d : IDF non declaré\
             }else{
               strcpy(CurrentType,GetType(&TS,$1));
             } 
+            strcpy($$.val,$1);
           } 
     | IDF '['ENTIER']' { if(!Search(&TS,$1)) {
                             printf("Erreur a la ligne %d :IDF non declaré\n",NL);
@@ -131,23 +168,30 @@ AFF : IDF { if(!Search(&TS,$1)) printf("Erreur a la ligne %d : IDF non declaré\
                           }else{
                             strcpy(CurrentType,GetType(&TS,$1));
                           }
+                          $$.val=malloc(20*sizeof(char));
+                          sprintf($$.val,"%s [ %d ]",$1,$3);
                         } 
     | ENTIER { if(strcmp(CurrentType,"")!=0) {
                   if(strcmp(CurrentType,"Integer")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
                 }else{
                   strcpy(CurrentType,"Integer");
-                }  
+                }
+                $$.val=malloc(20*sizeof(char));
+                sprintf($$.val,"%d",$1);  
               }
     | REEL  { if(strcmp(CurrentType,"")!=0) {
                 if(strcmp(CurrentType,"Real")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
                 }else{
                   strcpy(CurrentType,"Real");
-              }  
+              }
+              $$.val=malloc(20*sizeof(char));
+              sprintf($$.val,"%f",$1);  
             }
 ;
 
 IDFA: IDF { strcpy(CurrentType,GetType(&TS,$1));  
             if(!Search(&TS,$1)) printf("Erreur a la ligne %d : IDF non declaré\n",NL); 
+            strcpy($$.val,$1);
           } 
     | IDF '['ENTIER']'  { strcpy(CurrentType,GetType(&TS,$1)); 
                           if($3>CheckTabSize(&TS,$1)) printf("Erreur a la ligne %d : Debordement \n",NL);
@@ -156,6 +200,8 @@ IDFA: IDF { strcpy(CurrentType,GetType(&TS,$1));
                           }else{
                             if(!CheckTab(&TS,$1)) printf("Erreur a la ligne %d : IDF n'est pas un tableau\n" , NL);
                           }
+                          $$.val=malloc(20*sizeof(char));
+                          sprintf($$.val,"%s [ %d ]",$1,$3);
                         }
 ;
 

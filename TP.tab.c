@@ -102,10 +102,17 @@
 extern FILE* yyin;
 extern int NL,NC;
 #include"TableS.h"
+#include"Quad.c"
+#include"Pile.c"
 struct ENTITE *TS;
 struct  BIB *TB;
 char Type[10]="";
 char CurrentType[10]="";
+struct QUAD *Q=NULL;
+int num=1;
+int temp=1;
+char * tempc;
+struct PILE *Pile;
 
 
 /* Enabling traces.  */
@@ -127,14 +134,15 @@ char CurrentType[10]="";
 #endif
 
 #if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
-#line 12 "TP.y"
+#line 19 "TP.y"
 typedef union YYSTYPE {
 char *chaine;
 int entier;
 float reel;
+struct s {char * val; int type;}s;
 } YYSTYPE;
 /* Line 196 of yacc.c.  */
-#line 138 "TP.tab.c"
+#line 146 "TP.tab.c"
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
@@ -146,7 +154,7 @@ float reel;
 
 
 /* Line 219 of yacc.c.  */
-#line 150 "TP.tab.c"
+#line 158 "TP.tab.c"
 
 #if ! defined (YYSIZE_T) && defined (__SIZE_TYPE__)
 # define YYSIZE_T __SIZE_TYPE__
@@ -383,11 +391,11 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned char yyrline[] =
 {
-       0,    25,    25,    27,    28,    31,    35,    39,    45,    46,
-      49,    50,    51,    54,    60,    68,    74,    82,    90,    91,
-      94,    95,    98,    99,   100,   103,   106,   107,   108,   111,
-     112,   113,   116,   123,   135,   141,   149,   152,   162,   163,
-     166
+       0,    34,    34,    36,    37,    40,    44,    48,    54,    55,
+      58,    59,    60,    63,    69,    77,    83,    91,    99,   100,
+     103,   104,   107,   108,   109,   112,   118,   125,   132,   135,
+     142,   149,   152,   160,   174,   182,   192,   196,   208,   209,
+     212
 };
 #endif
 
@@ -1195,12 +1203,12 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 25 "TP.y"
-    {printf("Programme  syntaxiquement correct\n");;}
+#line 34 "TP.y"
+    {printf("Programme  syntaxiquement correct\n");ShowQ(&Q);;}
     break;
 
   case 5:
-#line 31 "TP.y"
+#line 40 "TP.y"
     { if(SearchB(&TB,"Calcul")){printf("Erreur a la ligne %d : Bibliotheque  Calcul déja declarée  \n", NL); 
                 }else
                 InsertBib(&TB,"Calcul",NL);   
@@ -1208,7 +1216,7 @@ yyreduce:
     break;
 
   case 6:
-#line 35 "TP.y"
+#line 44 "TP.y"
     { if(SearchB(&TB,"TAB")) {printf("Erreur a la ligne %d : Bibliotheque TAB déja declarée \n",NL); 
                 }else
                 InsertBib(&TB,"TAB",NL);   
@@ -1216,7 +1224,7 @@ yyreduce:
     break;
 
   case 7:
-#line 39 "TP.y"
+#line 48 "TP.y"
     { if(SearchB(&TB,"BOUCLE")) {printf("Erreur a la ligne %d : Bibliotheque BOUCLE déja declarée \n",NL);
                 }else
                 InsertBib(&TB,"BOUCLE",NL);
@@ -1224,12 +1232,12 @@ yyreduce:
     break;
 
   case 11:
-#line 50 "TP.y"
+#line 59 "TP.y"
     { if(!SearchB(&TB,"TAB")) printf("Erreur a la ligne %d : Bibliothéque TAB non Déclarée!\n",NL); ;}
     break;
 
   case 13:
-#line 54 "TP.y"
+#line 63 "TP.y"
     { if(!Search(&TS,(yyvsp[-2].chaine))) Insert(&TS,(yyvsp[-2].chaine),Type,1,"VAR",NL); 
                           else{ 
                             if(GetLine(&TS,(yyvsp[-2].chaine))==NL) printf("Erreur a la ligne %d : Double declaration d'IDF dans la meme ligne %d \n",NL,NL);
@@ -1239,7 +1247,7 @@ yyreduce:
     break;
 
   case 14:
-#line 60 "TP.y"
+#line 69 "TP.y"
     { if(!Search(&TS,(yyvsp[-1].chaine))) Insert(&TS,(yyvsp[-1].chaine),Type,1,"VAR",NL); 
                       else{ 
                         if(GetLine(&TS,(yyvsp[-1].chaine))==NL) printf("Erreur a la ligne %d : Double declaration d'IDF dans la meme ligne %d \n",NL,NL);
@@ -1249,7 +1257,7 @@ yyreduce:
     break;
 
   case 15:
-#line 68 "TP.y"
+#line 77 "TP.y"
     { if(!Search(&TS,(yyvsp[-2].chaine))) Insert(&TS,(yyvsp[-2].chaine),Type,1,"CONST",NL);
                               else{
                                 if(GetLine(&TS,(yyvsp[-2].chaine))==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
@@ -1259,7 +1267,7 @@ yyreduce:
     break;
 
   case 16:
-#line 74 "TP.y"
+#line 83 "TP.y"
     { if(!Search(&TS,(yyvsp[-1].chaine))) Insert(&TS,(yyvsp[-1].chaine),Type,1,"CONST",NL);
                     else{
                       if(GetLine(&TS,(yyvsp[-1].chaine))==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
@@ -1269,7 +1277,7 @@ yyreduce:
     break;
 
   case 17:
-#line 82 "TP.y"
+#line 91 "TP.y"
     { if(!Search(&TS,(yyvsp[-4].chaine))) Insert(&TS,(yyvsp[-4].chaine),Type,(yyvsp[-2].entier),"TAB",NL);
                                   else{
                                     if(GetLine(&TS,(yyvsp[-4].chaine))==NL) printf("Erreur a la ligne %d : Double declaration du tableau dans la meme ligne %d \n",NL,NL);
@@ -1279,43 +1287,101 @@ yyreduce:
     break;
 
   case 18:
-#line 90 "TP.y"
+#line 99 "TP.y"
     {strcpy(Type,"Real");;}
     break;
 
   case 19:
-#line 91 "TP.y"
+#line 100 "TP.y"
     {strcpy(Type,"Integer");;}
     break;
 
   case 22:
-#line 98 "TP.y"
+#line 107 "TP.y"
     { if(!SearchB(&TB,"BOUCLE")) printf("Erreur a la ligne %d : Bibliothéque BOUCLE non Déclarée!\n",NL);;}
     break;
 
   case 24:
-#line 100 "TP.y"
+#line 109 "TP.y"
     { if(!SearchB(&TB,"Calcul")) printf("Erreur a la ligne %d : Bibliothéque Calcul non Déclarée!\n",NL);;}
     break;
 
   case 25:
-#line 103 "TP.y"
-    {strcpy(CurrentType,"");;}
+#line 112 "TP.y"
+    { strcpy(CurrentType,"");
+                                  InsertQ(&Q,"=",(yyvsp[-1].s).val,"",(yyvsp[-3].s).val,num);
+                                  num++;
+                                ;}
+    break;
+
+  case 26:
+#line 118 "TP.y"
+    { char* tempc=malloc(sizeof(10));
+                          sprintf(tempc,"T%d",temp);
+                          temp++;
+                          InsertQ(&Q,"+",(yyvsp[-2].s).val,(yyvsp[0].s).val,tempc,num);
+                          num++;
+                          strcpy((yyval.s).val,tempc);
+                        ;}
+    break;
+
+  case 27:
+#line 125 "TP.y"
+    {  char* tempc=malloc(sizeof(10));   
+                          sprintf(tempc,"T%d",temp);
+                          temp++; 
+                          InsertQ(&Q,"-",(yyvsp[-2].s).val,(yyvsp[0].s).val,tempc,num);
+                          num++;  
+                          strcpy((yyval.s).val,tempc);
+                        ;}
+    break;
+
+  case 28:
+#line 132 "TP.y"
+    { strcpy((yyval.s).val,(yyvsp[0].s).val); ;}
+    break;
+
+  case 29:
+#line 135 "TP.y"
+    { char* tempc=malloc(sizeof(10));   
+                            sprintf(tempc,"T%d",temp);
+                            temp++; 
+                            InsertQ(&Q,"*",(yyvsp[-2].s).val,(yyvsp[0].s).val,tempc,num);
+                            num++;  
+                            strcpy((yyval.s).val,tempc);
+                          ;}
+    break;
+
+  case 30:
+#line 142 "TP.y"
+    { char* tempc=malloc(sizeof(10));   
+                            sprintf(tempc,"T%d",temp);
+                            temp++; 
+                            InsertQ(&Q,"/",(yyvsp[-2].s).val,(yyvsp[0].s).val,tempc,num);
+                            num++;  
+                            strcpy((yyval.s).val,tempc);
+                          ;}
+    break;
+
+  case 31:
+#line 149 "TP.y"
+    { strcpy((yyval.s).val,(yyvsp[0].s).val);;}
     break;
 
   case 32:
-#line 116 "TP.y"
+#line 152 "TP.y"
     { if(!Search(&TS,(yyvsp[0].chaine))) printf("Erreur a la ligne %d : IDF non declaré\n " ,NL); 
             if(strcmp(CurrentType,"")!=0){
               if(strcmp(CurrentType,GetType(&TS,(yyvsp[0].chaine)))!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
             }else{
               strcpy(CurrentType,GetType(&TS,(yyvsp[0].chaine)));
             } 
+            strcpy((yyval.s).val,(yyvsp[0].chaine));
           ;}
     break;
 
   case 33:
-#line 123 "TP.y"
+#line 160 "TP.y"
     { if(!Search(&TS,(yyvsp[-3].chaine))) {
                             printf("Erreur a la ligne %d :IDF non declaré\n",NL);
                           }else{
@@ -1327,38 +1393,45 @@ yyreduce:
                           }else{
                             strcpy(CurrentType,GetType(&TS,(yyvsp[-3].chaine)));
                           }
+                          (yyval.s).val=malloc(20*sizeof(char));
+                          sprintf((yyval.s).val,"%s [ %d ]",(yyvsp[-3].chaine),(yyvsp[-1].entier));
                         ;}
     break;
 
   case 34:
-#line 135 "TP.y"
+#line 174 "TP.y"
     { if(strcmp(CurrentType,"")!=0) {
                   if(strcmp(CurrentType,"Integer")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
                 }else{
                   strcpy(CurrentType,"Integer");
-                }  
+                }
+                (yyval.s).val=malloc(20*sizeof(char));
+                sprintf((yyval.s).val,"%d",(yyvsp[0].entier));  
               ;}
     break;
 
   case 35:
-#line 141 "TP.y"
+#line 182 "TP.y"
     { if(strcmp(CurrentType,"")!=0) {
                 if(strcmp(CurrentType,"Real")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
                 }else{
                   strcpy(CurrentType,"Real");
-              }  
+              }
+              (yyval.s).val=malloc(20*sizeof(char));
+              sprintf((yyval.s).val,"%f",(yyvsp[0].reel));  
             ;}
     break;
 
   case 36:
-#line 149 "TP.y"
+#line 192 "TP.y"
     { strcpy(CurrentType,GetType(&TS,(yyvsp[0].chaine)));  
             if(!Search(&TS,(yyvsp[0].chaine))) printf("Erreur a la ligne %d : IDF non declaré\n",NL); 
+            strcpy((yyval.s).val,(yyvsp[0].chaine));
           ;}
     break;
 
   case 37:
-#line 152 "TP.y"
+#line 196 "TP.y"
     { strcpy(CurrentType,GetType(&TS,(yyvsp[-3].chaine))); 
                           if((yyvsp[-1].entier)>CheckTabSize(&TS,(yyvsp[-3].chaine))) printf("Erreur a la ligne %d : Debordement \n",NL);
                           if(!Search(&TS,(yyvsp[-3].chaine))) {
@@ -1366,6 +1439,8 @@ yyreduce:
                           }else{
                             if(!CheckTab(&TS,(yyvsp[-3].chaine))) printf("Erreur a la ligne %d : IDF n'est pas un tableau\n" , NL);
                           }
+                          (yyval.s).val=malloc(20*sizeof(char));
+                          sprintf((yyval.s).val,"%s [ %d ]",(yyvsp[-3].chaine),(yyvsp[-1].entier));
                         ;}
     break;
 
@@ -1374,7 +1449,7 @@ yyreduce:
     }
 
 /* Line 1126 of yacc.c.  */
-#line 1378 "TP.tab.c"
+#line 1453 "TP.tab.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1642,7 +1717,7 @@ yyreturn:
 }
 
 
-#line 169 "TP.y"
+#line 215 "TP.y"
 
 int yyerror(char* msg)
 {
