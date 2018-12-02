@@ -1,9 +1,12 @@
 #Calcul
 #TAB
 #BOUCLE
-#Calcul
 Programme Mp {
-Real A || A;
-A:=A + 6.5+A+7.5/5.2+6.0;
-A:= 5.5*9.2+5.2*5.0+0.0;
+Integer A;
+Integer B;
+	While(A>B){
+		EXECUT
+		A:=A+5;
+		IF(A>5)
+	}
 }

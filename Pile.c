@@ -12,7 +12,7 @@ int PileSommet(struct PILE** Tete){
   if(PileVide(Tete)) return -1;
   else return (**Tete).val;
 }
-void Push(struct PILE** Tete , int val){
+void PUSH(struct PILE** Tete , int val){
   if (PileVide(Tete)){
     *Tete=malloc(sizeof(struct PILE));
     (**Tete).val=val;

@@ -305,14 +305,14 @@ union yyalloc
 /* YYFINAL -- State number of the termination state. */
 #define YYFINAL  7
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   79
+#define YYLAST   78
 
 /* YYNTOKENS -- Number of terminals. */
 #define YYNTOKENS  32
 /* YYNNTS -- Number of nonterminals. */
-#define YYNNTS  19
+#define YYNNTS  23
 /* YYNRULES -- Number of rules. */
-#define YYNRULES  40
+#define YYNRULES  43
 /* YYNRULES -- Number of states. */
 #define YYNSTATES  87
 
@@ -364,8 +364,8 @@ static const unsigned char yyprhs[] =
        0,     0,     3,    11,    14,    16,    18,    20,    22,    26,
       29,    31,    33,    36,    40,    43,    47,    50,    56,    58,
       60,    63,    65,    67,    69,    71,    76,    80,    84,    86,
-      90,    94,    96,    98,   103,   105,   107,   109,   114,   124,
-     132
+      90,    94,    96,    98,   103,   105,   107,   109,   114,   119,
+     126,   129,   131,   139
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS. */
@@ -377,25 +377,25 @@ static const yysigned_char yyrhs[] =
       -1,    40,    -1,    25,    39,    -1,    28,    27,    38,    -1,
       28,     8,    -1,    28,    27,    39,    -1,    28,     8,    -1,
       28,    14,    30,    15,     8,    -1,    20,    -1,    21,    -1,
-      43,    42,    -1,    43,    -1,    49,    -1,    50,    -1,    44,
+      43,    42,    -1,    43,    -1,    49,    -1,    51,    -1,    44,
       -1,    48,    26,    45,     8,    -1,    45,    10,    46,    -1,
       45,    12,    46,    -1,    46,    -1,    46,    11,    47,    -1,
       46,    13,    47,    -1,    47,    -1,    28,    -1,    28,    14,
       30,    15,    -1,    30,    -1,    31,    -1,    28,    -1,    28,
-      14,    30,    15,    -1,    17,     5,    45,    29,    45,     6,
-       3,    42,     4,    -1,    17,     5,    45,     6,     3,    42,
-       4,    -1,    18,    42,    19,     5,    45,    29,    45,     6,
+      14,    30,    15,    -1,    50,     3,    42,     4,    -1,    17,
+       5,    45,    29,    45,     6,    -1,    52,    53,    -1,    18,
+      -1,    54,    19,     5,    45,    29,    45,     6,    -1,    42,
       -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const unsigned char yyrline[] =
+static const unsigned short int yyrline[] =
 {
        0,    34,    34,    36,    37,    40,    44,    48,    54,    55,
       58,    59,    60,    63,    69,    77,    83,    91,    99,   100,
      103,   104,   107,   108,   109,   112,   118,   125,   132,   135,
-     142,   149,   152,   160,   174,   182,   192,   196,   208,   209,
-     212
+     142,   149,   152,   160,   174,   182,   192,   196,   208,   217,
+     244,   246,   252,   284
 };
 #endif
 
@@ -410,7 +410,8 @@ static const char *const yytname[] =
   "EGAL", "SEP", "IDF", "OPR", "ENTIER", "REEL", "$accept", "Start",
   "Bibliotheque", "Bib", "DECLARATION", "Val", "DecVar", "DecConst",
   "DecTab", "TYPE", "INSTRUCTION", "TypeInstruction", "AFFECTATION", "EXP",
-  "EXPPRIO", "AFF", "IDFA", "LOOP", "CONDITION", 0
+  "EXPPRIO", "AFF", "IDFA", "LOOP", "A", "CONDITION", "execut",
+  "condition", "DebutInst", 0
 };
 #endif
 
@@ -432,8 +433,8 @@ static const unsigned char yyr1[] =
        0,    32,    33,    34,    34,    35,    35,    35,    36,    36,
       37,    37,    37,    38,    38,    39,    39,    40,    41,    41,
       42,    42,    43,    43,    43,    44,    45,    45,    45,    46,
-      46,    46,    47,    47,    47,    47,    48,    48,    49,    49,
-      50
+      46,    46,    47,    47,    47,    47,    48,    48,    49,    50,
+      51,    52,    53,    54
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -442,8 +443,8 @@ static const unsigned char yyr2[] =
        0,     2,     7,     2,     1,     1,     1,     1,     3,     2,
        1,     1,     2,     3,     2,     3,     2,     5,     1,     1,
        2,     1,     1,     1,     1,     4,     3,     3,     1,     3,
-       3,     1,     1,     4,     1,     1,     1,     4,     9,     7,
-       8
+       3,     1,     1,     4,     1,     1,     1,     4,     4,     6,
+       2,     1,     7,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -452,44 +453,46 @@ static const unsigned char yyr2[] =
 static const unsigned char yydefact[] =
 {
        0,     7,     6,     5,     0,     0,     4,     1,     0,     3,
-       0,     0,    18,    19,     0,     0,     0,     0,    36,     0,
-      21,    24,     0,    22,    23,     0,     0,     9,    10,    11,
-       0,     0,     0,     2,    20,     0,     0,    12,    14,     0,
-       0,     8,    32,    34,    35,     0,    28,    31,     0,     0,
-       0,    16,     0,     0,     0,    13,     0,     0,     0,     0,
-       0,     0,     0,     0,    37,    25,    15,     0,     0,     0,
-      26,    27,     0,    29,    30,     0,    17,    33,     0,     0,
-       0,    39,     0,     0,     0,    40,    38
+       0,     0,    18,    19,     0,     0,     0,    41,    36,     0,
+      21,    24,     0,    22,     0,    23,     0,     0,     0,     9,
+      10,    11,     0,     0,     2,    20,     0,     0,    43,    40,
+       0,     0,    12,    14,     0,     0,     8,    32,    34,    35,
+       0,    28,    31,     0,     0,     0,     0,    16,     0,     0,
+       0,    13,     0,     0,     0,     0,     0,     0,    37,    25,
+      38,     0,    15,     0,     0,    26,    27,     0,    29,    30,
+       0,    17,    33,    39,     0,     0,    42
 };
 
 /* YYDEFGOTO[NTERM-NUM]. */
 static const yysigned_char yydefgoto[] =
 {
-      -1,     4,     5,     6,    14,    27,    28,    37,    29,    15,
-      19,    20,    21,    45,    46,    47,    22,    23,    24
+      -1,     4,     5,     6,    14,    29,    30,    42,    31,    15,
+      19,    20,    21,    50,    51,    52,    22,    23,    24,    25,
+      26,    39,    40
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -35
+#define YYPACT_NINF -37
 static const yysigned_char yypact[] =
 {
-      17,   -35,   -35,   -35,    23,    -6,    17,   -35,    15,   -35,
-      30,    27,   -35,   -35,    -1,   -21,    40,    -1,    37,    51,
-      -1,   -35,    32,   -35,   -35,    28,    -3,    27,   -35,   -35,
-       7,    38,    29,   -35,   -35,     7,     1,   -35,   -35,    33,
-      34,   -35,    46,   -35,   -35,    -4,    31,   -35,    56,    49,
-      10,   -35,    28,    52,     5,   -35,    36,    65,     7,     7,
-       7,     7,     7,     7,   -35,   -35,   -35,    61,    55,    -1,
-      31,    31,     9,   -35,   -35,     2,   -35,   -35,    67,    69,
-       7,   -35,    -1,    24,    70,   -35,   -35
+      28,   -37,   -37,   -37,    23,    20,    28,   -37,    18,   -37,
+      44,    -2,   -37,   -37,    -1,    17,    48,   -37,    35,    50,
+      -1,   -37,    29,   -37,    53,   -37,    -1,    30,    -7,    -2,
+     -37,   -37,    10,    31,   -37,   -37,    10,    -1,   -37,   -37,
+      38,    -5,   -37,   -37,    32,    36,   -37,    45,   -37,   -37,
+      -8,     0,   -37,    51,     2,    56,    58,   -37,    30,    52,
+      -3,   -37,    39,    10,    10,    10,    10,    10,   -37,   -37,
+     -37,    10,   -37,    57,    55,     0,     0,    22,   -37,   -37,
+      -4,   -37,   -37,   -37,    10,    27,   -37
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yysigned_char yypgoto[] =
 {
-     -35,   -35,    71,   -35,    48,   -35,    39,    21,   -35,   -35,
-     -17,   -35,   -35,   -34,    -9,    -8,   -35,   -35,   -35
+     -37,   -37,    62,   -37,    42,   -37,    33,    14,   -37,   -37,
+     -11,   -37,   -37,   -36,   -33,   -23,   -37,   -37,   -37,   -37,
+     -37,   -37,   -37
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -499,26 +502,26 @@ static const yysigned_char yypgoto[] =
 #define YYTABLE_NINF -1
 static const unsigned char yytable[] =
 {
-      31,    50,    57,    34,    25,    38,    58,    26,    59,    51,
-       8,    39,    58,    38,    59,    79,    16,    17,    65,    58,
-      58,    59,    59,     7,    40,    60,    72,    18,    52,    75,
-      85,    80,    40,    11,    58,    42,    59,    43,    44,     1,
-       2,     3,    61,    10,    62,    30,    83,    12,    13,    70,
-      71,    32,    78,    73,    74,    33,    36,    48,    35,    49,
-      56,    63,    54,    53,    64,    84,    68,    67,    69,    76,
-      77,    81,    82,    66,    86,    41,     0,     9,     0,    55
+      54,    43,    63,    57,    64,    43,    63,    44,    64,    35,
+      69,    66,    63,    67,    64,    38,    16,    17,    12,    13,
+      45,    65,    58,     7,    45,    84,    55,    18,    83,    77,
+      75,    76,    63,    86,    64,    80,     8,    63,    47,    64,
+      48,    49,    27,    78,    79,    28,    10,    11,    85,    33,
+       1,     2,     3,    32,    34,    36,    37,    56,    41,    62,
+      70,    53,    59,    71,    60,    81,    68,    73,     9,    74,
+      82,    46,    72,     0,     0,     0,     0,     0,    61
 };
 
 static const yysigned_char yycheck[] =
 {
-      17,    35,     6,    20,    25,     8,    10,    28,    12,     8,
-      16,    14,    10,     8,    12,     6,    17,    18,     8,    10,
-      10,    12,    12,     0,    27,    29,    60,    28,    27,    63,
-       6,    29,    27,     3,    10,    28,    12,    30,    31,    22,
-      23,    24,    11,    28,    13,     5,    80,    20,    21,    58,
-      59,    14,    69,    61,    62,     4,    28,    19,    26,    30,
-      14,     5,    28,    30,    15,    82,    30,    15,     3,     8,
-      15,     4,     3,    52,     4,    27,    -1,     6,    -1,    40
+      36,     8,    10,     8,    12,     8,    10,    14,    12,    20,
+       8,    11,    10,    13,    12,    26,    17,    18,    20,    21,
+      27,    29,    27,     0,    27,    29,    37,    28,     6,    65,
+      63,    64,    10,     6,    12,    71,    16,    10,    28,    12,
+      30,    31,    25,    66,    67,    28,    28,     3,    84,    14,
+      22,    23,    24,     5,     4,    26,     3,    19,    28,    14,
+       4,    30,    30,     5,    28,     8,    15,    15,     6,    30,
+      15,    29,    58,    -1,    -1,    -1,    -1,    -1,    45
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -527,13 +530,13 @@ static const unsigned char yystos[] =
 {
        0,    22,    23,    24,    33,    34,    35,     0,    16,    34,
       28,     3,    20,    21,    36,    41,    17,    18,    28,    42,
-      43,    44,    48,    49,    50,    25,    28,    37,    38,    40,
-       5,    42,    14,     4,    42,    26,    28,    39,     8,    14,
-      27,    36,    28,    30,    31,    45,    46,    47,    19,    30,
-      45,     8,    27,    30,    28,    38,    14,     6,    10,    12,
-      29,    11,    13,     5,    15,     8,    39,    15,    30,     3,
-      46,    46,    45,    47,    47,    45,     8,    15,    42,     6,
-      29,     4,     3,    45,    42,     6,     4
+      43,    44,    48,    49,    50,    51,    52,    25,    28,    37,
+      38,    40,     5,    14,     4,    42,    26,     3,    42,    53,
+      54,    28,    39,     8,    14,    27,    36,    28,    30,    31,
+      45,    46,    47,    30,    45,    42,    19,     8,    27,    30,
+      28,    38,    14,    10,    12,    29,    11,    13,    15,     8,
+       4,     5,    39,    15,    30,    46,    46,    45,    47,    47,
+      45,     8,    15,     6,    29,    45,     6
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1444,12 +1447,106 @@ yyreduce:
                         ;}
     break;
 
+  case 38:
+#line 208 "TP.y"
+    { int x=PULL(&Pile);
+                              char *tempc;
+                              tempc=malloc(sizeof(10));
+                              sprintf(tempc,"%d",x);
+                              InsertQ(&Q,"BR",tempc,"","",num);
+                              num++;
+                              MAJQ(&Q,x,num);
+                              ;}
+    break;
+
+  case 39:
+#line 217 "TP.y"
+    {  PUSH(&Pile,num);
+                                if(strcmp((yyvsp[-2].chaine),"<")==0){
+                                InsertQ(&Q,"BGE","",(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);
+                                num++;
+                                }
+                                if(strcmp((yyvsp[-2].chaine),"==")==0) {
+                                  InsertQ(&Q,"BNE","",(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);
+                                  num++;
+                                }
+                                if(strcmp((yyvsp[-2].chaine),"!=")==0) {
+                                  InsertQ(&Q,"BE","",(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);  
+                                  num++;
+                                }
+                                if(strcmp((yyvsp[-2].chaine),">")==0){
+                                  InsertQ(&Q,"BLE","",(yyvsp[-3].s).val,(yyvsp[-1].s).val,num); 
+                                  num++;
+                                }
+                                if(strcmp((yyvsp[-2].chaine),"<=")==0){
+                                  InsertQ(&Q,"BG","",(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);
+                                  num++;
+                                }
+                                if(strcmp((yyvsp[-2].chaine),">=")==0){
+                                  InsertQ(&Q,"BL","",(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);
+                                  num++;
+                                }
+                              ;}
+    break;
+
+  case 41:
+#line 246 "TP.y"
+    { InsertQ(&Q,"BR","","","",num);
+                  PUSH(&Pile,num);
+                  num++;
+                  PUSH(&Pile,num);
+                ;}
+    break;
+
+  case 42:
+#line 252 "TP.y"
+    {  MAJQ(&Q,PULL(&Pile),num+1);
+                                                int x;
+                                                x=PULL(&Pile);
+                                                char *tempc;
+                                                tempc=malloc(sizeof(10));
+                                                sprintf(tempc,"%d",x);   
+                                                if(strcmp((yyvsp[-2].chaine),"<")==0) {
+                                                  InsertQ(&Q,"BL",tempc,(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                                if(strcmp((yyvsp[-2].chaine),"==")==0) {
+                                                  InsertQ(&Q,"BE",tempc,(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                                if(strcmp((yyvsp[-2].chaine),"!=")==0) {
+                                                  InsertQ(&Q,"BNE",tempc,(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);  
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                                if(strcmp((yyvsp[-2].chaine),">")==0){
+                                                  InsertQ(&Q,"BG",tempc,(yyvsp[-3].s).val,(yyvsp[-1].s).val,num); 
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                                if(strcmp((yyvsp[-2].chaine),"<=")==0){
+                                                  InsertQ(&Q,"BNE",tempc,(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                                if(strcmp((yyvsp[-2].chaine),">=")==0){
+                                                  InsertQ(&Q,"BGE",tempc,(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                              ;}
+    break;
+
+  case 43:
+#line 284 "TP.y"
+    { InsertQ(&Q,"BR","","","",num);
+                        PUSH(&Pile,num);
+                        num++;
+                      ;}
+    break;
+
 
       default: break;
     }
 
 /* Line 1126 of yacc.c.  */
-#line 1453 "TP.tab.c"
+#line 1550 "TP.tab.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1717,7 +1814,7 @@ yyreturn:
 }
 
 
-#line 215 "TP.y"
+#line 289 "TP.y"
 
 int yyerror(char* msg)
 {

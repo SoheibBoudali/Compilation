@@ -204,14 +204,88 @@ IDFA: IDF { strcpy(CurrentType,GetType(&TS,$1));
                           sprintf($$.val,"%s [ %d ]",$1,$3);
                         }
 ;
-
-LOOP: While '(' EXP OPR EXP ')' '{' INSTRUCTION '}'
-    | While '(' EXP ')' '{' INSTRUCTION '}'
+//LOOP: While '(' EXP ')' '{' INSTRUCTION '}'
+LOOP: A '{' INSTRUCTION '}' { int x=PULL(&Pile);
+                              char *tempc;
+                              tempc=malloc(sizeof(10));
+                              sprintf(tempc,"%d",x);
+                              InsertQ(&Q,"BR",tempc,"","",num);
+                              num++;
+                              MAJQ(&Q,x,num);
+                              }
 ;
-
-CONDITION: EXECUT INSTRUCTION IF '(' EXP OPR EXP ')' 
+A : While '(' EXP OPR EXP ')' {  PUSH(&Pile,num);
+                                if(strcmp($4,"<")==0){
+                                InsertQ(&Q,"BGE","",$3.val,$5.val,num);
+                                num++;
+                                }
+                                if(strcmp($4,"==")==0) {
+                                  InsertQ(&Q,"BNE","",$3.val,$5.val,num);
+                                  num++;
+                                }
+                                if(strcmp($4,"!=")==0) {
+                                  InsertQ(&Q,"BE","",$3.val,$5.val,num);  
+                                  num++;
+                                }
+                                if(strcmp($4,">")==0){
+                                  InsertQ(&Q,"BLE","",$3.val,$5.val,num); 
+                                  num++;
+                                }
+                                if(strcmp($4,"<=")==0){
+                                  InsertQ(&Q,"BG","",$3.val,$5.val,num);
+                                  num++;
+                                }
+                                if(strcmp($4,">=")==0){
+                                  InsertQ(&Q,"BL","",$3.val,$5.val,num);
+                                  num++;
+                                }
+                              }
 ;
-
+CONDITION: execut condition
+;
+execut : EXECUT { InsertQ(&Q,"BR","","","",num);
+                  PUSH(&Pile,num);
+                  num++;
+                  PUSH(&Pile,num);
+                }
+;
+condition : DebutInst IF '(' EXP OPR EXP ')' {  MAJQ(&Q,PULL(&Pile),num+1);
+                                                int x;
+                                                x=PULL(&Pile);
+                                                char *tempc;
+                                                tempc=malloc(sizeof(10));
+                                                sprintf(tempc,"%d",x);   
+                                                if(strcmp($5,"<")==0) {
+                                                  InsertQ(&Q,"BL",tempc,$4.val,$6.val,num);
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                                if(strcmp($5,"==")==0) {
+                                                  InsertQ(&Q,"BE",tempc,$4.val,$6.val,num);
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                                if(strcmp($5,"!=")==0) {
+                                                  InsertQ(&Q,"BNE",tempc,$4.val,$6.val,num);  
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                                if(strcmp($5,">")==0){
+                                                  InsertQ(&Q,"BG",tempc,$4.val,$6.val,num); 
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                                if(strcmp($5,"<=")==0){
+                                                  InsertQ(&Q,"BNE",tempc,$4.val,$6.val,num);
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                                if(strcmp($5,">=")==0){
+                                                  InsertQ(&Q,"BGE",tempc,$4.val,$6.val,num);
+                                                  MAJQ(&Q,PULL(&Pile),num);num++;
+                                                }
+                                              } 
+;
+DebutInst:INSTRUCTION { InsertQ(&Q,"BR","","","",num);
+                        PUSH(&Pile,num);
+                        num++;
+                      } 
+;
 %%
 int yyerror(char* msg)
 {

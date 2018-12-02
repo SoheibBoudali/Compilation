@@ -48,7 +48,7 @@ SEP "||"
     }
 {ENTIER} {NC=NC+strlen(yytext);yylval.entier=atoi(yytext); return ENTIER;}
 {REEL} {NC=NC+strlen(yytext);yylval.reel=atof(yytext); return REEL;}
-{OPR} {NC=NC+strlen(yytext);return OPR; }
+{OPR} {NC=NC+strlen(yytext);strcpy(yylval.chaine,yytext);return OPR; }
 . {printf("Erreur lexicale ligne %d colonne %d ======> %s Inconnu \n",NL,NC,yytext);}
 %%
 	int yywrap()
