@@ -10,7 +10,7 @@
 IDF [A-Z][A-Za-z0-9]*
 ENTIER [-]?[0-9]+
 REEL   [-]?[0-9]+[/.][0-9]+
-OPR  ("=="|"<"|">"|"<="|">="|"!=")
+OPR  "=="|"<"|">"|"<="|">="|"!="
 SEP "||"
 %%
 {SEP} {NC=NC+2; return SEP;}
@@ -41,14 +41,14 @@ SEP "||"
 "While" {NC=NC+strlen(yytext);return While;}
 "EXECUT" {NC=NC+strlen(yytext); return EXECUT;}
 "IF" {NC=NC+strlen(yytext); return IF;}
-{IDF} {
+{IDF} { 
     if(strlen(yytext)>12){
     	printf("Erreur! l'identifiant %s est trop long (Taille maximum 12 caractere)\n",yytext);}										
-       	NC=NC+strlen(yytext); yylval.chaine=strdup(yytext); return IDF;
+       	NC=NC+strlen(yytext); yylval.chaine=strdup(yytext);return IDF;
     }
 {ENTIER} {NC=NC+strlen(yytext);yylval.entier=atoi(yytext); return ENTIER;}
 {REEL} {NC=NC+strlen(yytext);yylval.reel=atof(yytext); return REEL;}
-{OPR} {NC=NC+strlen(yytext);strcpy(yylval.chaine,yytext);return OPR; }
+{OPR} {NC=NC+strlen(yytext);yylval.chaine=strdup(yytext);return OPR; }
 . {printf("Erreur lexicale ligne %d colonne %d ======> %s Inconnu \n",NL,NC,yytext);}
 %%
 	int yywrap()

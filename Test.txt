@@ -2,11 +2,15 @@
 #TAB
 #BOUCLE
 Programme Mp {
-Integer A;
 Integer B;
-	While(A>B){
-		EXECUT
-		A:=A+5;
-		IF(A>5)
-	}
+Integer A;
+While ( A==B){
+	A:=A;
+	While ( A==B){
+		A:=A;
+		While ( A==B){
+		A:=A;
+		}
+}
+}
 }
