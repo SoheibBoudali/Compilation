@@ -40,7 +40,7 @@ void ShowQ(struct QUAD** Tete){
   struct QUAD* Parcourir;
   Parcourir=*Tete;
   FILE* File=NULL;
-  File=fopen("quad.txt","w+");
+  File=fopen("QUAD.txt","w+");
   while(Parcourir!=NULL){
     fprintf(File," %d-(%s,%s,%s,%s)\n",(*Parcourir).QN,(*Parcourir).OPR1,(*Parcourir).OPR2,(*Parcourir).OPR3,(*Parcourir).RESULT);
     Parcourir=(*Parcourir).SVT;
@@ -56,4 +56,27 @@ void MAJQ(struct QUAD** Tete,int QN,int QFin){
   }
   sprintf(Chaine,"%d",QFin);
   strcpy((*Parcourir).OPR2,Chaine);
+}
+
+
+void  Opt1(struct QUAD** TeteQ,struct ENTITE** TeteTS){
+  struct QUAD *Parcourir = *TeteQ;
+  while (Parcourir != NULL){ 
+    if (strcmp((*Parcourir).OPR1, "=") == 0 && strcmp((*Parcourir).OPR3, "") == 0 && Search(TeteTS, (*Parcourir).RESULT)){
+      struct QUAD *Continue = (*Parcourir).SVT;
+      while (Continue != NULL && strcmp((*Continue).RESULT, (*Parcourir).OPR2) != 0 && strcmp((*Continue).RESULT, (*Parcourir).RESULT) != 0){
+        if (strcmp((*Continue).OPR1, "BNE") != 0 && strcmp((*Continue).OPR1, "BE") != 0 && strcmp((*Continue).OPR1, "BGE") != 0 && strcmp((*Continue).OPR1, "BG") != 0 && strcmp((*Continue).OPR1, "BLE") != 0 && strcmp((*Continue).OPR1, "BL") != 0 && strcmp((*Continue).OPR1, "BR") != 0){
+          if (strcmp((*Continue).OPR2, (*Parcourir).RESULT) == 0){
+            strcpy((*Continue).OPR2, (*Parcourir).OPR2);
+          }else{
+            if (strcmp((*Continue).OPR3, (*Parcourir).RESULT) == 0){
+              strcpy((*Continue).OPR3, (*Parcourir).OPR2);
+            }
+          }
+        }
+        Continue = (*Continue).SVT;
+      }
+    }
+    Parcourir = (*Parcourir).SVT;
+  }
 }

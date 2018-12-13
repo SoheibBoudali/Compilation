@@ -8,6 +8,7 @@ extern int NL,NC;
 struct ENTITE *TS;
 struct  BIB *TB;
 char Type[10]="";
+char CurrentType[10]="";
 struct QUAD *Q=NULL;
 int num=1;
 int temp=1;
@@ -19,7 +20,7 @@ struct PILE *Pile;
 char *chaine;
 int entier;
 float reel;
-struct s {char * val; char * type;}s;
+struct s {char * val; int type;}s;
 }
 %token '{' '}' '(' ')' ':' ';' ',' '+' '*' '-' '/' '[' ']' 
 %token Programme While EXECUT IF Real Integer BOUCLE TAB Calcul CONST EGAL SEP 
@@ -30,7 +31,7 @@ struct s {char * val; char * type;}s;
 %type <s> IDFA EXP EXPPRIO AFF
 %%
 
-Start : Bibliotheque Programme IDF '{' DECLARATION  INSTRUCTION '}' {printf("Programme  syntaxiquement correct\n");ShowQ(&Q);};
+Start : Bibliotheque Programme IDF '{' DECLARATION  INSTRUCTION '}' {printf("Programme  syntaxiquement correct\n");};
 
 Bibliotheque : Bib Bibliotheque 
             |  Bib 
@@ -108,26 +109,18 @@ TypeInstruction: LOOP { if(!SearchB(&TB,"BOUCLE")) printf("Erreur a la ligne %d 
                 | AFFECTATION { if(!SearchB(&TB,"Calcul")) printf("Erreur a la ligne %d : Bibliothéque Calcul non Déclarée!\n",NL);}
 ;
 
-AFFECTATION : IDFA EGAL EXP ';' { if(strcmp($1.type,$3.type)!=0){
-                                    printf("Erreur d'incompatibilité de type a la ligne %d\n",NL);
-                                  }
+AFFECTATION : IDFA EGAL EXP ';' { strcpy(CurrentType,"");
                                   InsertQ(&Q,"=",$3.val,"",$1.val,num);
                                   num++;
                                 }
 ;
 
-EXP : EXP  '+'  EXPPRIO { char tempc[100];
+EXP : EXP  '+'  EXPPRIO { char* tempc=malloc(sizeof(10));
                           sprintf(tempc,"T%d",temp);
                           temp++;
                           InsertQ(&Q,"+",$1.val,$3.val,tempc,num);
-
                           num++;
                           strcpy($$.val,tempc);
-
-                          if(strcmp($1.type,$3.type)!=0){
-                            printf("Erreur d'incompatibilité de type a la ligne %d\n",NL);
-                          }                                                                              
-
                         }
      | EXP '-' EXPPRIO {  char* tempc=malloc(sizeof(10));   
                           sprintf(tempc,"T%d",temp);
@@ -135,17 +128,8 @@ EXP : EXP  '+'  EXPPRIO { char tempc[100];
                           InsertQ(&Q,"-",$1.val,$3.val,tempc,num);
                           num++;  
                           strcpy($$.val,tempc);
-                          if(strcmp($1.type,$3.type)!=0){
-                            printf("Erreur d'incompatibilité de type a la ligne %d\n",NL);
-                          }
                         }
-     | EXPPRIO {  
-      $$.type=malloc(20*sizeof(char));
-                $$.val=malloc(20*sizeof(char));
-
-                strcpy($$.type,$1.type); 
-                strcpy($$.val,$1.val);
-              }
+     | EXPPRIO { strcpy($$.val,$1.val); }
 ;
 
 EXPPRIO : EXPPRIO '*' AFF { char* tempc=malloc(sizeof(10));   
@@ -154,9 +138,6 @@ EXPPRIO : EXPPRIO '*' AFF { char* tempc=malloc(sizeof(10));
                             InsertQ(&Q,"*",$1.val,$3.val,tempc,num);
                             num++;  
                             strcpy($$.val,tempc);
-                            if(strcmp($1.type,$3.type)!=0){
-                            printf("Erreur d'incompatibilité de type a la ligne %d\n",NL);
-                            }
                           }
         | EXPPRIO '/' AFF { char* tempc=malloc(sizeof(10));   
                             sprintf(tempc,"T%d",temp);
@@ -164,78 +145,75 @@ EXPPRIO : EXPPRIO '*' AFF { char* tempc=malloc(sizeof(10));
                             InsertQ(&Q,"/",$1.val,$3.val,tempc,num);
                             num++;  
                             strcpy($$.val,tempc);
-                            if(strcmp($1.type,$3.type)!=0){
-                              printf("Erreur d'incompatibilité de type a la ligne %d\n",NL);
-                            }
                           } 
-        | AFF { $$.type=strdup($1.type);
-                $$.val=strdup($1.val);
-              }
+        | AFF { strcpy($$.val,$1.val);}
 ;
 
-AFF : IDF {  if(!Search(&TS,$1))  {                           
-printf("Erreur a la ligne %d : IDF non declaré3\n " ,NL); }
-            else{
-              $$.type=malloc(20*sizeof(char));
-              strcpy($$.type,GetType(&TS,$1)); 
-              $$.val=malloc(20*sizeof(char));
-              sprintf($$.val,"%s",$1);
-            }
+AFF : IDF { if(!Search(&TS,$1)) printf("Erreur a la ligne %d : IDF non declaré\n " ,NL); 
+            if(strcmp(CurrentType,"")!=0){
+              if(strcmp(CurrentType,GetType(&TS,$1))!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
+            }else{
+              strcpy(CurrentType,GetType(&TS,$1));
+            } 
+            strcpy($$.val,$1);
           } 
     | IDF '['ENTIER']' { if(!Search(&TS,$1)) {
-                            printf("Erreur a la ligne %d :IDF non declaré4\n",NL);
+                            printf("Erreur a la ligne %d :IDF non declaré\n",NL);
                           }else{
                             if(!CheckTab(&TS,$1)) printf("Erreur a la ligne %d : IDF n'est pas un tableau\n",NL);
                           }
                           if($3>CheckTabSize(&TS,$1)) printf("Erreur a la ligne %d : Debordement \n",NL);
-                          $$.type=malloc(20*sizeof(char));
-                          strcpy($$.type,GetType(&TS,$1)); 
+                          if(strcmp(CurrentType,"")!=0){
+                            if(strcmp(CurrentType,GetType(&TS,$1))!=0) printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);
+                          }else{
+                            strcpy(CurrentType,GetType(&TS,$1));
+                          }
                           $$.val=malloc(20*sizeof(char));
                           sprintf($$.val,"%s [ %d ]",$1,$3);
                         } 
-    | ENTIER {$$.type=malloc(20*sizeof(char));
-              strcpy($$.type,"Integer"); 
-              $$.val=malloc(20*sizeof(char));
-              sprintf($$.val,"%d",$1);  
+    | ENTIER { if(strcmp(CurrentType,"")!=0) {
+                  if(strcmp(CurrentType,"Integer")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
+                }else{
+                  strcpy(CurrentType,"Integer");
+                }
+                $$.val=malloc(20*sizeof(char));
+                sprintf($$.val,"%d",$1);  
               }
-    | REEL  { $$.type=malloc(20*sizeof(char));
-              strcpy($$.type,"Real"); 
+    | REEL  { if(strcmp(CurrentType,"")!=0) {
+                if(strcmp(CurrentType,"Real")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
+                }else{
+                  strcpy(CurrentType,"Real");
+              }
               $$.val=malloc(20*sizeof(char));
               sprintf($$.val,"%f",$1);  
             }
 ;
 
-IDFA: IDF { if(!Search(&TS,$1)) printf("Erreur a la ligne %d : IDF non declaré1\n",NL); 
-            else{
-              $$.type=malloc(20*sizeof(char));
-              strcpy($$.type,GetType(&TS,$1)); 
-              $$.val=malloc(20*sizeof(char));
-              sprintf($$.val,"%s",$1);
-            }
+IDFA: IDF { strcpy(CurrentType,GetType(&TS,$1));  
+            if(!Search(&TS,$1)) printf("Erreur a la ligne %d : IDF non declaré\n",NL); 
+            strcpy($$.val,$1);
           } 
-    | IDF '['ENTIER']'  { if($3>CheckTabSize(&TS,$1)) printf("Erreur a la ligne %d : Debordement \n",NL);
+    | IDF '['ENTIER']'  { strcpy(CurrentType,GetType(&TS,$1)); 
+                          if($3>CheckTabSize(&TS,$1)) printf("Erreur a la ligne %d : Debordement \n",NL);
                           if(!Search(&TS,$1)) {
-                            printf("Erreur a la ligne %d : IDF non declaré2\n",NL);
+                            printf("Erreur a la ligne %d : IDF non declaré\n",NL);
                           }else{
                             if(!CheckTab(&TS,$1)) printf("Erreur a la ligne %d : IDF n'est pas un tableau\n" , NL);
                           }
-                          $$.type=malloc(20*sizeof(char));
-                          strcpy($$.type,GetType(&TS,$1)); 
                           $$.val=malloc(20*sizeof(char));
                           sprintf($$.val,"%s [ %d ]",$1,$3);
                         }
 ;
-LOOP: A '{' INSTRUCTION '}' { 
-                              int x=PULL(&Pile);
+LOOP: A '{' INSTRUCTION '}' { int x=PULL(&Pile);
                               char *tempc;
-                              tempc=malloc(20*sizeof(char));
+                              tempc=malloc(sizeof(10));
                               sprintf(tempc,"%d",x);
                               InsertQ(&Q,"BR",tempc,"","",num);
                               num++;
                               MAJQ(&Q,x,num);
                               }
 ;
-A : While '('  EXP OPR EXP ')' {PUSH(&Pile,num);
+A : While '(' EXP OPR EXP ')' {  PUSH(&Pile,num);
                                 if(strcmp($4,"<")==0){
                                 InsertQ(&Q,"BGE","",$3.val,$5.val,num);
                                 num++;
@@ -251,7 +229,6 @@ A : While '('  EXP OPR EXP ')' {PUSH(&Pile,num);
                                 if(strcmp($4,">")==0){
                                   InsertQ(&Q,"BLE","",$3.val,$5.val,num); 
                                   num++;
-
                                 }
                                 if(strcmp($4,"<=")==0){
                                   InsertQ(&Q,"BG","",$3.val,$5.val,num);
@@ -271,11 +248,11 @@ execut : EXECUT { InsertQ(&Q,"BR","","","",num);
                   PUSH(&Pile,num);
                 }
 ;
-condition : CondInst IF '(' EXP OPR EXP ')' {  MAJQ(&Q,PULL(&Pile),num+1);
+condition : DebutInst IF '(' EXP OPR EXP ')' {  MAJQ(&Q,PULL(&Pile),num+1);
                                                 int x;
                                                 x=PULL(&Pile);
                                                 char *tempc;
-                                                tempc=malloc(20*sizeof(char));
+                                                tempc=malloc(sizeof(10));
                                                 sprintf(tempc,"%d",x);   
                                                 if(strcmp($5,"<")==0) {
                                                   InsertQ(&Q,"BL",tempc,$4.val,$6.val,num);
@@ -303,7 +280,7 @@ condition : CondInst IF '(' EXP OPR EXP ')' {  MAJQ(&Q,PULL(&Pile),num+1);
                                                 }
                                               } 
 ;
-CondInst:INSTRUCTION { InsertQ(&Q,"BR","","","",num);
+DebutInst:INSTRUCTION { InsertQ(&Q,"BR","","","",num);
                         PUSH(&Pile,num);
                         num++;
                       } 
@@ -320,5 +297,7 @@ yyin=fopen("Test.txt","r");
 yyparse();
 Show(&TS);
 ShowB(&TB);
+Opt1(&Q,&TS);
+ShowQ(&Q);
 return 0;
 }

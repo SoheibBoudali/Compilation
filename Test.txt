@@ -4,13 +4,8 @@
 Programme Mp {
 Integer B;
 Integer A;
-While ( A==B){
-	A:=A;
-	While ( A==B){
-		A:=A;
-		While ( A==B){
-		A:=A;
-		}
-}
-}
+Integer C;
+A:=B;
+C:=A+1;
+C:=A*2;
 }
