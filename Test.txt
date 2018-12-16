@@ -1,10 +1,1 @@
-#Calcul
-#TAB
-#BOUCLE
-Programme Mp {
-Integer B;
-Integer A;
-Integer CONST C:=5;
-A:=B;
-C:=5;
-}
+
