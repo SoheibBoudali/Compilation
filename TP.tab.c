@@ -392,10 +392,10 @@ static const yysigned_char yyrhs[] =
 static const unsigned short int yyrline[] =
 {
        0,    34,    34,    36,    37,    40,    44,    48,    54,    55,
-      58,    59,    60,    63,    69,    77,    83,    91,    99,   100,
-     103,   104,   107,   108,   109,   112,   118,   125,   132,   135,
-     142,   149,   152,   160,   174,   182,   192,   196,   207,   216,
-     243,   245,   251,   283
+      58,    59,    60,    63,    69,    77,    83,    90,    98,    99,
+     102,   103,   106,   107,   108,   111,   117,   124,   131,   134,
+     141,   148,   151,   159,   173,   181,   191,   195,   206,   215,
+     242,   244,   250,   282
 };
 #endif
 
@@ -1280,7 +1280,7 @@ yyreduce:
     break;
 
   case 17:
-#line 91 "TP.y"
+#line 90 "TP.y"
     { if(!Search(&TS,(yyvsp[-4].chaine))) Insert(&TS,(yyvsp[-4].chaine),Type,(yyvsp[-2].entier),"TAB",NL);
                                   else{
                                     if(GetLine(&TS,(yyvsp[-4].chaine))==NL) printf("Erreur a la ligne %d : Double declaration du tableau dans la meme ligne %d \n",NL,NL);
@@ -1290,27 +1290,27 @@ yyreduce:
     break;
 
   case 18:
-#line 99 "TP.y"
+#line 98 "TP.y"
     {strcpy(Type,"Real");;}
     break;
 
   case 19:
-#line 100 "TP.y"
+#line 99 "TP.y"
     {strcpy(Type,"Integer");;}
     break;
 
   case 22:
-#line 107 "TP.y"
+#line 106 "TP.y"
     { if(!SearchB(&TB,"BOUCLE")) printf("Erreur a la ligne %d : Bibliothéque BOUCLE non Déclarée!\n",NL);;}
     break;
 
   case 24:
-#line 109 "TP.y"
+#line 108 "TP.y"
     { if(!SearchB(&TB,"Calcul")) printf("Erreur a la ligne %d : Bibliothéque Calcul non Déclarée!\n",NL);;}
     break;
 
   case 25:
-#line 112 "TP.y"
+#line 111 "TP.y"
     { strcpy(CurrentType,"");
                                   InsertQ(&Q,"=",(yyvsp[-1].s).val,"",(yyvsp[-3].s).val,num);
                                   num++;
@@ -1318,7 +1318,7 @@ yyreduce:
     break;
 
   case 26:
-#line 118 "TP.y"
+#line 117 "TP.y"
     { char* tempc=malloc(sizeof(10));
                           sprintf(tempc,"T%d",temp);
                           temp++;
@@ -1329,7 +1329,7 @@ yyreduce:
     break;
 
   case 27:
-#line 125 "TP.y"
+#line 124 "TP.y"
     {  char* tempc=malloc(sizeof(10));   
                           sprintf(tempc,"T%d",temp);
                           temp++; 
@@ -1340,12 +1340,12 @@ yyreduce:
     break;
 
   case 28:
-#line 132 "TP.y"
+#line 131 "TP.y"
     { strcpy((yyval.s).val,(yyvsp[0].s).val); ;}
     break;
 
   case 29:
-#line 135 "TP.y"
+#line 134 "TP.y"
     { char* tempc=malloc(sizeof(10));   
                             sprintf(tempc,"T%d",temp);
                             temp++; 
@@ -1356,7 +1356,7 @@ yyreduce:
     break;
 
   case 30:
-#line 142 "TP.y"
+#line 141 "TP.y"
     { char* tempc=malloc(sizeof(10));   
                             sprintf(tempc,"T%d",temp);
                             temp++; 
@@ -1367,12 +1367,12 @@ yyreduce:
     break;
 
   case 31:
-#line 149 "TP.y"
+#line 148 "TP.y"
     { strcpy((yyval.s).val,(yyvsp[0].s).val);;}
     break;
 
   case 32:
-#line 152 "TP.y"
+#line 151 "TP.y"
     { if(!Search(&TS,(yyvsp[0].chaine))) printf("Erreur a la ligne %d : IDF non declaré\n " ,NL); 
             if(strcmp(CurrentType,"")!=0){
               if(strcmp(CurrentType,GetType(&TS,(yyvsp[0].chaine)))!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
@@ -1384,7 +1384,7 @@ yyreduce:
     break;
 
   case 33:
-#line 160 "TP.y"
+#line 159 "TP.y"
     { if(!Search(&TS,(yyvsp[-3].chaine))) {
                             printf("Erreur a la ligne %d :IDF non declaré\n",NL);
                           }else{
@@ -1402,7 +1402,7 @@ yyreduce:
     break;
 
   case 34:
-#line 174 "TP.y"
+#line 173 "TP.y"
     { if(strcmp(CurrentType,"")!=0) {
                   if(strcmp(CurrentType,"Integer")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
                 }else{
@@ -1414,7 +1414,7 @@ yyreduce:
     break;
 
   case 35:
-#line 182 "TP.y"
+#line 181 "TP.y"
     { if(strcmp(CurrentType,"")!=0) {
                 if(strcmp(CurrentType,"Real")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
                 }else{
@@ -1426,7 +1426,7 @@ yyreduce:
     break;
 
   case 36:
-#line 192 "TP.y"
+#line 191 "TP.y"
     { strcpy(CurrentType,GetType(&TS,(yyvsp[0].chaine)));  
             if(!Search(&TS,(yyvsp[0].chaine))) printf("Erreur a la ligne %d : IDF non declaré\n",NL); 
             strcpy((yyval.s).val,(yyvsp[0].chaine));
@@ -1434,7 +1434,7 @@ yyreduce:
     break;
 
   case 37:
-#line 196 "TP.y"
+#line 195 "TP.y"
     { strcpy(CurrentType,GetType(&TS,(yyvsp[-3].chaine))); 
                           if((yyvsp[-1].entier)>CheckTabSize(&TS,(yyvsp[-3].chaine))) printf("Erreur a la ligne %d : Debordement \n",NL);
                           if(!Search(&TS,(yyvsp[-3].chaine))) {
@@ -1448,7 +1448,7 @@ yyreduce:
     break;
 
   case 38:
-#line 207 "TP.y"
+#line 206 "TP.y"
     { int x=PULL(&Pile);
                               char *tempc;
                               tempc=malloc(sizeof(10));
@@ -1460,7 +1460,7 @@ yyreduce:
     break;
 
   case 39:
-#line 216 "TP.y"
+#line 215 "TP.y"
     {  PUSH(&Pile,num);
                                 if(strcmp((yyvsp[-2].chaine),"<")==0){
                                 InsertQ(&Q,"BGE","",(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);
@@ -1490,7 +1490,7 @@ yyreduce:
     break;
 
   case 41:
-#line 245 "TP.y"
+#line 244 "TP.y"
     { InsertQ(&Q,"BR","","","",num);
                   PUSH(&Pile,num);
                   num++;
@@ -1499,7 +1499,7 @@ yyreduce:
     break;
 
   case 42:
-#line 251 "TP.y"
+#line 250 "TP.y"
     {  MAJQ(&Q,PULL(&Pile),num+1);
                                                 int x;
                                                 x=PULL(&Pile);
@@ -1534,7 +1534,7 @@ yyreduce:
     break;
 
   case 43:
-#line 283 "TP.y"
+#line 282 "TP.y"
     { InsertQ(&Q,"BR","","","",num);
                         PUSH(&Pile,num);
                         num++;
@@ -1814,7 +1814,7 @@ yyreturn:
 }
 
 
-#line 288 "TP.y"
+#line 287 "TP.y"
 
 int yyerror(char* msg)
 {

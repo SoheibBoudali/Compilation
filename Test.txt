@@ -4,7 +4,7 @@
 Programme Mp {
 Integer B;
 Integer A;
-Integer C;
+Integer CONST C;
 A:=B;
 C:=B+5;
 While(A>5){
