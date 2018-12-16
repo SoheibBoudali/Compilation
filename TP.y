@@ -301,6 +301,7 @@ Show(&TS);
 ShowB(&TB);
 Opt1(&Q,&TS);
 Useless(&Q,&TS);
-ShowQ(&Q);
+ShowQ(&Q);/*
+Machine(&Q,&TS);*/
 return 0;
 }
