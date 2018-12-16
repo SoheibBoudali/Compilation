@@ -4,11 +4,14 @@
 Programme Mp {
 Integer B;
 Integer A;
-Integer CONST C := 5 || D := 6;
-Integer T[10];
-T[2]:=B;
-C:=T[2]+5;
+Integer CONST C:=5;
+A:=B;
+C:=B+5;
+K:=5;
 While(A>5){
 	C:=A+B;
 }
+EXECUT 
+	C:=A+B;
+	IF (A<C)
 }

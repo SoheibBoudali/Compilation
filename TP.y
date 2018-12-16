@@ -5,6 +5,7 @@ extern int NL,NC;
 #include"TableS.h"
 #include"Quad.c"
 #include"Pile.c"
+
 struct ENTITE *TS;
 struct  BIB *TB;
 char Type[10]="";
@@ -73,14 +74,13 @@ DecVar: IDF SEP DecVar  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"VAR",NL);
                       }
                   }       
 ;
- 
-DecConst: IDF EGAL VALEUR SEP DecConst  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"CONST",NL);
+DecConst: IDF  EGAL VALEUR  SEP DecConst  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"CONST",NL);
                               else{
                                 if(GetLine(&TS,$1)==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
                                 else printf("Erreur a la ligne %d : Constate deja definie a la ligne %d \n",NL,GetLine(&TS,$1));
                               }
                             }
-        | IDF  EGAL VALEUR';' { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"CONST",NL);
+        | IDF  EGAL VALEUR ';' { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"CONST",NL);
                     else{
                       if(GetLine(&TS,$1)==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
                       else printf("Erreur a la ligne %d : Constate deja definiea la ligne %d \n",NL,GetLine(&TS,$1));
@@ -88,7 +88,7 @@ DecConst: IDF EGAL VALEUR SEP DecConst  { if(!Search(&TS,$1)) Insert(&TS,$1,Type
                   }      
 ;
 VALEUR: ENTIER
-        | REEL
+      | REEL
 ;
 DecTab: IDF '[' ENTIER ']' ';'  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,$3,"TAB",NL);
                                   else{
@@ -302,5 +302,6 @@ ShowB(&TB);
 Opt1(&Q,&TS);
 Useless(&Q,&TS);
 ShowQ(&Q);
+Machine(&Q,&TS);
 return 0;
 }

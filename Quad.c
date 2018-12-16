@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 typedef struct QUAD{
     char OPR1[20];
     char OPR2[20];
@@ -127,4 +128,491 @@ void  Useless(struct QUAD** TeteQ, struct ENTITE** TeteTS){
     Pere = Parcourir;
     Parcourir=(*Parcourir).SVT;
   }
+}
+void Machine(struct QUAD** TeteQ, struct ENTITE** TeteTS){
+  FILE* File=NULL;
+  File=fopen("CODEMACHINE.txt","w+");
+  struct ENTITE* ParcourirTS =*TeteTS;
+  struct QUAD* ParcourirQ =*TeteQ;
+  fprintf(File, "     DATA SEGMENT \n");
+  while(ParcourirTS != NULL){
+    if((*ParcourirTS).TailleE >1){
+      fprintf(File, "       %s   DW   %s   DUP ( ? ) \n", (*ParcourirTS).NomE, (*ParcourirTS).TailleE);
+    }else{
+      if(strcmp((*ParcourirTS).State,"VAR")==0) {
+        if(strcmp((*ParcourirTS).TypeE,"Integer")){
+          fprintf(File, "      %s   DW   ?\n", (*ParcourirTS).NomE);
+        }else{
+          fprintf(File, "      %s   DD   ?\n", (*ParcourirTS).NomE);
+        }
+      }else{
+          fprintf(File, "      %s   EQU (Valeur de la constante non recupéré) \n", (*ParcourirTS).NomE);
+      }
+    }
+    ParcourirTS = (*ParcourirTS).SVT;
+  }
+  fprintf(File, "     DATA ENDS\n");
+  fprintf(File,"\n\n");
+  fprintf(File, "     PILE SEGMENT STACK\n");
+  fprintf(File, "       DW 1000 DUP(?)\n");
+  fprintf(File, "       TOS LABEL WORD\n");
+  fprintf(File, "     PILE ENDS\n");
+  fprintf(File,"\n\n");
+  fprintf(File, "     CODE SEGEMENT\n");
+  fprintf(File, "        ASSUME CS:CODE, DS:DATA SS:PILE\n");
+  fprintf(File, "        PROG_PRINCIPAL :\n");
+  fprintf(File, "        MOV AX , DATA\n");
+  fprintf(File, "        MOV DS , AX\n");
+  fprintf(File, "        MOV AX , PILE\n");
+  fprintf(File, "        MOV SS , AX\n");
+  fprintf(File, "        MOV SP , OFFSET TOS\n");
+  fprintf(File, "        MOV BP , OFFSET TOS\n\n\n\n");
+  int Change;
+  int num=0;
+  while(ParcourirQ != NULL){ 
+    fprintf(File,"\n     LABEL %d :\n\n",(*ParcourirQ).QN);
+    if(strcmp((*ParcourirQ).OPR1, "BGE") != 0 && strcmp((*ParcourirQ).OPR1, "BLE") != 0 && strcmp((*ParcourirQ).OPR1, "BNE") != 0 && strcmp((*ParcourirQ).OPR1, "BG") != 0 && strcmp((*ParcourirQ).OPR1, "BE") != 0 && strcmp((*ParcourirQ).OPR1, "BL") != 0  && strcmp((*ParcourirQ).OPR1, "BR") != 0){ 
+      if(strcmp((*ParcourirQ).OPR1, "+") == 0){
+        if((*ParcourirQ).OPR2[0] != 'T' && ((*ParcourirQ).OPR3[0] != 'T')){
+            fprintf(File, "        MOV AX , %s\n", (*ParcourirQ).OPR2);
+            fprintf(File, "        ADD AX , %s\n", (*ParcourirQ).OPR3);
+            fprintf(File, "        PUSH AX \n");
+        }else{
+          if((*ParcourirQ).OPR2[0] == 'T' && ((*ParcourirQ).OPR3[0] == 'T')){
+            fprintf(File, "        MOV BX , SP\n");
+            Change = (*ParcourirQ).OPR2[1]-'0'; 
+            Change *= 2;
+            fprintf(File, "        MOV SP , BP - %d\n", Change);
+            fprintf(File, "        POP AX \n");
+            Change = (*ParcourirQ).OPR3[1]-'0';
+            Change *= 2;
+            fprintf(File, "        MOV SP , BP - %d\n", Change);
+            fprintf(File, "        POP DX \n");
+            fprintf(File, "        ADD AX , DX \n");
+            fprintf(File, "        MOV SP , BX\n");
+            fprintf(File, "        PUSH AX \n");
+          }else{
+            if((*ParcourirQ).OPR2[0] == 'T'){
+              fprintf(File, "        MOV BX , SP\n");
+              Change = (*ParcourirQ).OPR2[1]-'0';
+              Change *= 2;
+              fprintf(File, "        MOV SP , BP - %d \n", Change);
+              fprintf(File, "        POP AX \n");
+              fprintf(File, "        MOV SP , BX\n");
+              fprintf(File, "        ADD AX , %s \n",(*ParcourirQ).OPR3);          
+              if((strcmp((*ParcourirQ).OPR2,(*ParcourirQ).RESULT)!=0)) {   
+                fprintf(File, "        PUSH AX \n");
+              }else{
+                fprintf(File, "        MOV [ BP - %d ] , AX \n",Change);
+              } 
+            }else{
+              fprintf(File, "        MOV AX , %s \n",(*ParcourirQ).OPR2);
+              fprintf(File, "        MOV BX , SP\n");
+              Change = (*ParcourirQ).OPR3[1]-'0';
+              Change *= 2;
+              fprintf(File, "        MOV SP , BP - %d \n", Change);
+              fprintf(File, "        POP DX \n");
+              fprintf(File, "        MOV SP , BX\n");
+              fprintf(File, "        ADD AX , DX \n");
+              fprintf(File, "        PUSH AX \n");
+            }
+          }
+        }
+      }  
+      if(strcmp((*ParcourirQ).OPR1, "-") == 0){
+        if((*ParcourirQ).OPR2[0] != 'T' && (*ParcourirQ).OPR3[0] != 'T'){
+          fprintf(File, "        MOV AX , %s\n", (*ParcourirQ).OPR2);
+          fprintf(File, "        SUB AX , %s\n", (*ParcourirQ).OPR3);
+          fprintf(File, "        PUSH AX \n");
+        }else{
+          if((*ParcourirQ).OPR2[0] == 'T' && ((*ParcourirQ).OPR3[0] == 'T')){
+            fprintf(File, "        MOV BX , SP\n");
+            Change =(*ParcourirQ).OPR2[1]-'0';
+            Change *= 2;
+            fprintf(File, "        MOV SP , BP - %d\n", Change);
+            fprintf(File, "        POP AX \n");
+            Change =(*ParcourirQ).OPR3[1]-'0';
+            Change *= 2;
+            fprintf(File, "        MOV SP , BP - %d\n", Change);
+            fprintf(File, "        POP DX \n");
+            fprintf(File, "        SUB AX , DX \n");
+            fprintf(File, "        MOV SP , BX\n");
+            fprintf(File, "        PUSH AX \n");
+          }else{
+            if((*ParcourirQ).OPR2[0] == 'T'){
+              fprintf(File, "        MOV BX , SP\n");
+              Change =(*ParcourirQ).OPR2[1]-'0';
+              Change *= 2;
+              fprintf(File, "        MOV SP , BP - %d \n", Change);
+              fprintf(File, "        POP AX \n");
+              fprintf(File, "        MOV SP , BX\n");
+              fprintf(File, "        SUB AX , %s \n",(*ParcourirQ).OPR3);
+              fprintf(File, "        PUSH AX \n");
+            }else{
+              fprintf(File, "        MOV AX , %s \n",(*ParcourirQ).OPR2);
+              fprintf(File, "        MOV BX , SP\n");
+              Change = (*ParcourirQ).OPR3[1]-'0';
+              Change *= 2;
+              fprintf(File, "        MOV SP , BP - %d \n", Change);
+              fprintf(File, "        POP DX \n");
+              fprintf(File, "        MOV SP , BX\n");
+              fprintf(File, "        SUB AX , DX \n");
+              fprintf(File, "        PUSH AX \n"); 
+            }
+          }
+        }
+      } 
+      if(strcmp((*ParcourirQ).OPR1, "*") == 0){
+        if((*ParcourirQ).OPR2[0] != 'T' && (*ParcourirQ).OPR3[0] != 'T'){
+          fprintf(File, "        MOV  AX , %s\n", (*ParcourirQ).OPR2);
+          fprintf(File, "        MULT AX , %s\n", (*ParcourirQ).OPR3);
+          fprintf(File, "        PUSH AX \n");
+        }else{
+          if((*ParcourirQ).OPR2[0] == 'T' && ((*ParcourirQ).OPR3[0] == 'T')){
+            fprintf(File, "        MOV BX , SP\n");
+            Change = (*ParcourirQ).OPR2[1]-'0';
+            Change *= 2;
+            fprintf(File, "        MOV SP , BP - %d\n", Change);
+            fprintf(File, "        POP AX \n");
+            Change =(*ParcourirQ).OPR3[1]-'0';
+            Change *= 2;
+            fprintf(File, "        MOV SP , BP - %d\n", Change);
+            fprintf(File, "        POP DX \n");
+            fprintf(File, "        MULT AX , DX \n");
+            fprintf(File, "        MOV SP , BX\n");
+            fprintf(File, "        PUSH AX \n");
+          }else{
+            if((*ParcourirQ).OPR2[0] == 'T'){
+              fprintf(File, "        MOV BX , SP\n");
+              Change =(*ParcourirQ).OPR2[1]-'0';
+              Change *= 2;
+              fprintf(File, "        MOV SP , BP - %d \n", Change);
+              fprintf(File, "        POP AX \n");
+              fprintf(File, "        MOV SP , BX\n");
+              fprintf(File, "        MULT AX , %s \n",(*ParcourirQ).OPR3);
+              fprintf(File, "        PUSH AX \n");
+            }else{
+              fprintf(File, "        MOV AX , %s \n",(*ParcourirQ).OPR2);
+              fprintf(File, "        MOV BX , SP\n");
+              Change =(*ParcourirQ).OPR3[1]-'0';
+              Change *= 2;
+              fprintf(File, "        MOV SP , BP - %d \n", Change);
+              fprintf(File, "        POP DX \n");
+              fprintf(File, "        MOV SP , BX\n");
+              fprintf(File, "        MULT AX , DX \n");
+              fprintf(File, "        PUSH AX \n");
+            }
+          }
+        }
+      }  
+      if(strcmp((*ParcourirQ).OPR1, "/") == 0){
+        if((*ParcourirQ).OPR2[0] != 'T' && (*ParcourirQ).OPR3[0] != 'T'){
+          fprintf(File, "        MOV AX , %s\n", (*ParcourirQ).OPR2);
+          fprintf(File, "        DIV AX , %s\n", (*ParcourirQ).OPR3);
+          fprintf(File, "        PUSH AX \n");
+        }else{
+          if((*ParcourirQ).OPR2[0] == 'T' && ((*ParcourirQ).OPR3[0] == 'T')){
+            fprintf(File, "        MOV BX , SP\n");
+            Change = (*ParcourirQ).OPR2[1]-'0';
+            Change *= 2;
+            fprintf(File, "        MOV SP , BP - %d\n", Change);
+            fprintf(File, "        POP AX \n");
+            Change = (*ParcourirQ).OPR3[1]-'0';
+            Change *= 2;
+            fprintf(File, "        MOV SP , BP - %d\n", Change);
+            fprintf(File, "        POP DX \n");
+            fprintf(File, "        DIV AX , DX \n");
+            fprintf(File, "        MOV SP , BX\n");
+            fprintf(File, "        PUSH AX \n");
+          }else{
+            if((*ParcourirQ).OPR2[0] == 'T'){
+              fprintf(File, "        MOV BX , SP\n");
+              Change = (*ParcourirQ).OPR2[1]-'0';
+              Change *= 2;
+              fprintf(File, "        MOV SP , BP - %d \n", Change);
+              fprintf(File, "        POP AX \n");
+              fprintf(File, "        MOV SP , BX\n");
+              fprintf(File, "        DIV AX , %s \n",(*ParcourirQ).OPR3);
+              fprintf(File, "        PUSH AX \n");
+            }else{
+              fprintf(File, "        MOV AX , %s \n",(*ParcourirQ).OPR2);
+              fprintf(File, "        MOV BX , SP\n");
+              Change = (*ParcourirQ).OPR3[1]-'0';
+              Change *= 2;
+              fprintf(File, "        MOV SP , BP - %d \n", Change);
+              fprintf(File, "        POP DX \n");
+              fprintf(File, "        MOV SP , BX\n");
+              fprintf(File, "        DIV AX , DX \n");
+              fprintf(File, "        PUSH AX \n");
+            }
+          }
+        } 
+      } 
+    }else{
+      if(strcmp((*ParcourirQ).OPR1,"BR")==0){
+        fprintf(File,"       JMP LABEL %s \n",(*ParcourirQ).OPR2); 
+      }else{
+        if(strcmp((*ParcourirQ).OPR1,"BNE")==0){
+          if((*ParcourirQ).RESULT[0] != 'T' && (*ParcourirQ).OPR3[0] != 'T'){
+            fprintf(File,"       CMP %s , %s \n",(*ParcourirQ).OPR3,(*ParcourirQ).RESULT);
+            fprintf(File,"       JNE LABEL %s \n",(*ParcourirQ).OPR2);
+          }else{
+            if ((*ParcourirQ).RESULT[0] == 'T' && ((*ParcourirQ).OPR3[0] == 'T')){
+              fprintf(File, "        MOV BX , SP\n");
+              Change = (*ParcourirQ).OPR3[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP AX \n");
+              Change = (*ParcourirQ).RESULT[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP DX \n");
+              fprintf(File, "       MOV SP , BX\n");
+              fprintf(File, "       CMP AX , DX \n");
+              fprintf(File,"       JNE LABEL %s \n",(*ParcourirQ).OPR2);
+            }else{
+              if((*ParcourirQ).OPR3[0] == 'T'){
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).OPR3[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP AX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       CMP AX , %s \n",(*ParcourirQ).RESULT);
+                fprintf(File,"       JNE LABEL %s \n",(*ParcourirQ).OPR2);
+              }else{
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).RESULT[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP DX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       MOV AX , %s \n",(*ParcourirQ).OPR3);
+                fprintf(File, "       CMP AX , DX \n");
+                fprintf(File,"       JNE LABEL %s \n",(*ParcourirQ).OPR2);
+              }
+            }
+          } 
+        }
+        if(strcmp((*ParcourirQ).OPR1,"BE")==0){
+          if((*ParcourirQ).RESULT[0] != 'T' && (*ParcourirQ).OPR3[0] != 'T')       {
+            fprintf(File,"       CMP %s , %s \n",(*ParcourirQ).OPR3,(*ParcourirQ).RESULT);
+            fprintf(File,"       JE LABEL %s \n",(*ParcourirQ).OPR2);
+          }else{
+            if((*ParcourirQ).RESULT[0] == 'T' && ((*ParcourirQ).OPR3[0] == 'T')){
+              fprintf(File, "       MOV BX , SP\n");
+              Change = (*ParcourirQ).OPR3[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP AX \n");
+              Change = (*ParcourirQ).RESULT[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP DX \n");
+              fprintf(File, "       MOV SP , BX\n");
+              fprintf(File, "       CMP AX , DX \n");
+              fprintf(File,"       JE LABEL %s \n",(*ParcourirQ).OPR2);
+            }else{
+              if((*ParcourirQ).OPR3[0] == 'T'){
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).OPR3[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP AX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       CMP AX , %s \n",(*ParcourirQ).RESULT);
+                fprintf(File,"       JE LABEL %s \n",(*ParcourirQ).OPR2);
+              }else{
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).RESULT[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP DX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       MOV AX , %s \n",(*ParcourirQ).OPR3);
+                fprintf(File, "       CMP AX , DX \n");
+                fprintf(File,"       JE LABEL %s \n",(*ParcourirQ).OPR2);
+              }
+            }  
+          } 
+        }
+        if(strcmp((*ParcourirQ).OPR1,"BGE")==0){
+          if((*ParcourirQ).RESULT[0] != 'T' && (*ParcourirQ).OPR3[0] != 'T'){
+            fprintf(File,"       CMP %s , %s \n",(*ParcourirQ).OPR3,(*ParcourirQ).RESULT);
+            fprintf(File,"       JGE LABEL %s \n",(*ParcourirQ).OPR2);
+          }else{
+            if((*ParcourirQ).RESULT[0] == 'T' && ((*ParcourirQ).OPR3[0] == 'T')){
+              fprintf(File, "       MOV BX , SP\n");
+              Change = (*ParcourirQ).OPR3[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP AX \n");
+              Change = (*ParcourirQ).RESULT[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP DX \n");
+              fprintf(File, "       MOV SP , BX\n");
+              fprintf(File, "       CMP AX , DX \n");
+              fprintf(File,"       JGE LABEL %s \n",(*ParcourirQ).OPR2);
+            }else{
+              if((*ParcourirQ).OPR3[0] == 'T'){
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).OPR3[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP AX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       CMP AX , %s \n",(*ParcourirQ).RESULT);
+                fprintf(File,"       JGE LABEL %s \n",(*ParcourirQ).OPR2);
+              }else{
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).RESULT[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP DX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       MOV AX , %s \n",(*ParcourirQ).OPR3);
+                fprintf(File, "       CMP AX , DX \n");
+                fprintf(File,"       JGE LABEL %s \n",(*ParcourirQ).OPR2);
+              }
+            }
+          }  
+        }
+        if(strcmp((*ParcourirQ).OPR1,"BG")==0){
+          if((*ParcourirQ).RESULT[0] != 'T' && (*ParcourirQ).OPR3[0] != 'T'){
+            fprintf(File,"       CMP %s , %s \n",(*ParcourirQ).OPR3,(*ParcourirQ).RESULT);
+            fprintf(File,"       JG LABEL %s \n",(*ParcourirQ).OPR2);
+          }else{
+            if((*ParcourirQ).RESULT[0] == 'T' && ((*ParcourirQ).OPR3[0] == 'T')){
+              fprintf(File, "       MOV BX , SP\n");
+              Change = (*ParcourirQ).OPR3[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP AX \n");
+              Change = (*ParcourirQ).RESULT[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP DX \n");
+              fprintf(File, "       MOV SP , BX\n");
+              fprintf(File, "       CMP AX , DX \n");
+              fprintf(File,"       JG LABEL %s \n",(*ParcourirQ).OPR2);
+            }else{
+              if((*ParcourirQ).OPR3[0] == 'T'){
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).OPR3[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP AX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       CMP AX , %s \n",(*ParcourirQ).RESULT);
+                fprintf(File,"       JG LABEL %s \n",(*ParcourirQ).OPR2);
+              }else{
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).RESULT[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP DX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       MOV AX , %s \n",(*ParcourirQ).OPR3);
+                fprintf(File, "       CMP AX , DX \n");
+                fprintf(File,"       JG LABEL %s \n",(*ParcourirQ).OPR2);
+              }
+            }
+          } 
+        }
+        if(strcmp((*ParcourirQ).OPR1,"BLE")==0){
+          if((*ParcourirQ).RESULT[0] != 'T' && (*ParcourirQ).OPR3[0] != 'T'){
+            fprintf(File,"       CMP %s , %s \n",(*ParcourirQ).OPR3,(*ParcourirQ).RESULT);
+            fprintf(File,"       JLE LABEL %s \n",(*ParcourirQ).OPR2);
+          }else{
+            if((*ParcourirQ).RESULT[0] == 'T' && ((*ParcourirQ).OPR3[0] == 'T')){
+              fprintf(File, "       MOV BX , SP\n");
+              Change = (*ParcourirQ).OPR3[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP AX \n");
+              Change = (*ParcourirQ).RESULT[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP DX \n");
+              fprintf(File, "       MOV SP , BX\n");
+              fprintf(File, "       CMP AX , DX \n");
+              fprintf(File,"       JLE LABEL %s \n",(*ParcourirQ).OPR2);
+            }else{
+              if((*ParcourirQ).OPR3[0] == 'T'){
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).OPR3[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP AX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       CMP AX , %s \n",(*ParcourirQ).RESULT);
+                fprintf(File,"       JLE LABEL %s \n",(*ParcourirQ).OPR2);
+              }else{
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).RESULT[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP DX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       MOV AX , %s \n",(*ParcourirQ).OPR3);
+                fprintf(File, "       CMP AX , DX \n");
+                fprintf(File,"       JLE LABEL %s \n",(*ParcourirQ).OPR2);
+              }
+            }
+          } 
+        }
+        if(strcmp((*ParcourirQ).OPR1,"BL")==0){
+          if((*ParcourirQ).RESULT[0] != 'T' && (*ParcourirQ).OPR3[0] != 'T')       {
+            fprintf(File,"       CMP %s , %s \n",(*ParcourirQ).OPR3,(*ParcourirQ).RESULT);
+            fprintf(File,"       JL LABEL %s \n",(*ParcourirQ).OPR2);
+          }else{
+            if((*ParcourirQ).RESULT[0] == 'T' && ((*ParcourirQ).OPR3[0] == 'T')){
+              fprintf(File, "       MOV BX , SP\n");
+              Change = (*ParcourirQ).OPR3[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP AX \n");
+              Change = (*ParcourirQ).RESULT[1]-'0';
+              Change *= 2;
+              fprintf(File, "       MOV SP , BP - %d\n", Change);
+              fprintf(File, "       POP DX \n");
+              fprintf(File, "       MOV SP , BX\n");
+              fprintf(File, "       CMP AX , DX \n");
+              fprintf(File,"       JL LABEL %s \n",(*ParcourirQ).OPR2);
+            }else{
+              if((*ParcourirQ).OPR3[0] == 'T'){
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).OPR3[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP AX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       CMP AX , %s \n",(*ParcourirQ).RESULT);
+                fprintf(File,"       JL LABEL %s \n",(*ParcourirQ).OPR2);
+              }else{
+                fprintf(File, "       MOV BX , SP\n");
+                Change = (*ParcourirQ).RESULT[1]-'0';
+                Change *= 2;
+                fprintf(File, "       MOV SP , BP - %d \n", Change);
+                fprintf(File, "       POP DX \n");
+                fprintf(File, "       MOV SP , BX\n");
+                fprintf(File, "       MOV AX , %s \n",(*ParcourirQ).OPR3);
+                fprintf(File, "       CMP AX , DX \n");
+                fprintf(File,"       JL LABEL %s \n",(*ParcourirQ).OPR2);
+              }
+            }
+          } 
+        }
+      }    
+    } 
+    num=(*ParcourirQ).QN;
+    ParcourirQ = (*ParcourirQ).SVT;
+  } 
+  fprintf(File, "\n     LABEL %d:\n\n",num+1);
+  fprintf(File, "       MOV AH,4CH\n");
+  fprintf(File, "       INT 21h\n");
+  fprintf(File, "       CODE ENDS\n");
+  fprintf(File, "       END PROG_PRINCIPAL\n");
+  fclose(File);
 }
