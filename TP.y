@@ -298,6 +298,7 @@ yyparse();
 Show(&TS);
 ShowB(&TB);
 Opt1(&Q,&TS);
+Useless(&Q,&TS);
 ShowQ(&Q);
 return 0;
 }

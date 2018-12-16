@@ -80,3 +80,51 @@ void  Opt1(struct QUAD** TeteQ,struct ENTITE** TeteTS){
     Parcourir = (*Parcourir).SVT;
   }
 }
+void  Useless(struct QUAD** TeteQ, struct ENTITE** TeteTS){
+  struct QUAD* Parcourir =*TeteQ;
+  struct QUAD* Pere = NULL;
+  while(Parcourir != NULL){
+    if(strcmp((*Parcourir).OPR1,"=")==0 && Search(TeteTS,(*Parcourir).RESULT)){
+      struct QUAD* Continue =(*Parcourir).SVT;
+      while(Continue != NULL && strcmp((*Parcourir).RESULT,(*Continue).OPR2)!=0 && strcmp((*Parcourir).RESULT,(*Continue).OPR3)!=0 && strcmp((*Continue).OPR1, "BGE") != 0 && strcmp((*Continue).OPR1, "BLE") != 0 && strcmp((*Continue).OPR1, "BNE") != 0 && strcmp((*Continue).OPR1, "BG") != 0 && strcmp((*Continue).OPR1, "BE") != 0 && strcmp((*Continue).OPR1, "BL") != 0 || (Continue != NULL && !(strcmp((*Continue).OPR1, "BGE") != 0 && strcmp((*Continue).OPR1, "BLE") != 0 && strcmp((*Continue).OPR1, "BNE") != 0 && strcmp((*Continue).OPR1, "BG") != 0 && strcmp((*Continue).OPR1, "BE") != 0 && strcmp((*Continue).OPR1, "BL") != 0))){
+        Continue=(*Continue).SVT;
+      }
+      if(Continue==NULL){
+        if(Pere==NULL){
+          *TeteQ=(**TeteQ).SVT;
+          struct  QUAD* Change = (*Parcourir).SVT;
+          while(Change!= NULL){
+            if(strcmp((*Change).OPR1, "BGE") != 0 && strcmp((*Change).OPR1, "BLE") != 0 && strcmp((*Change).OPR1, "BNE") != 0 && strcmp((*Change).OPR1, "BG") != 0 && strcmp((*Change).OPR1, "BE") != 0 && strcmp((*Change).OPR1, "BL") != 0  && strcmp((*Change).OPR1, "BR") != 0){
+              (*Change).QN--;
+            }else{
+              (*Change).QN--;
+              if(atoi((*Change).OPR2)>(*Parcourir).QN){
+              int n=atoi((*Change).OPR2)-1;
+              sprintf((*Change).OPR2,"%d",n);
+              }
+            }
+            Change=(*Change).SVT;
+          }
+        }else{
+          (*Pere).SVT=(*Parcourir).SVT;
+          Parcourir=Pere;
+          struct  QUAD* Change = (*Parcourir).SVT;
+          while(Change!= NULL){
+            if(strcmp((*Change).OPR1, "BGE") != 0 && strcmp((*Change).OPR1, "BLE") != 0 && strcmp((*Change).OPR1, "BNE") != 0 && strcmp((*Change).OPR1, "BG") != 0 && strcmp((*Change).OPR1, "BE") != 0 && strcmp((*Change).OPR1, "BL") != 0  && strcmp((*Change).OPR1, "BR") != 0){
+              (*Change).QN--;
+            }else{
+              (*Change).QN--;
+              if(atoi((*Change).OPR2)>(*Parcourir).QN){
+              int n=atoi((*Change).OPR2)-1;
+              sprintf((*Change).OPR2,"%d",n);
+              }
+            }
+            Change=(*Change).SVT;
+          }
+        }
+      }
+    }
+    Pere = Parcourir;
+    Parcourir=(*Parcourir).SVT;
+  }
+}

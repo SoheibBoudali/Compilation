@@ -5,13 +5,10 @@ Programme Mp {
 Integer B;
 Integer A;
 Integer C;
-Integer CONST H:= 5;
 A:=B;
-C:=A+1;
-C:=A*2;
-H:=5.6;
-While(A>A+5){
-	A:=C+5;
-	B:=A+C;
+C:=B+5;
+While(A>5){
+	C:=A+B;
 }
+
 }
