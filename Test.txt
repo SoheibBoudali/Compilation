@@ -1,1 +1,14 @@
-
+#Calcul
+#TAB
+#BOUCLE
+Programme Mp {
+Integer B;
+Integer A;
+Integer CONST C := 5 || D := 6;
+Integer T[10];
+T[2]:=B;
+C:=T[2]+5;
+While(A>5){
+	C:=A+B;
+}
+}
