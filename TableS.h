@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 
+
 typedef struct ENTITE {
     char NomE[12];
     char TypeE[10];

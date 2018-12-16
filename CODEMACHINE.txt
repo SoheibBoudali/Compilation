@@ -1,0 +1,75 @@
+     DATA SEGMENT 
+      B   DD   ?
+      A   DD   ?
+      C   EQU (Valeur de la constante non recupéré) 
+     DATA ENDS
+
+
+     PILE SEGMENT STACK
+       DW 1000 DUP(?)
+       TOS LABEL WORD
+     PILE ENDS
+
+
+     CODE SEGEMENT
+        ASSUME CS:CODE, DS:DATA SS:PILE
+        PROG_PRINCIPAL :
+        MOV AX , DATA
+        MOV DS , AX
+        MOV AX , PILE
+        MOV SS , AX
+        MOV SP , OFFSET TOS
+        MOV BP , OFFSET TOS
+
+
+
+
+     LABEL 1 :
+
+        MOV AX , B
+        ADD AX , 5
+        PUSH AX 
+
+     LABEL 2 :
+
+
+     LABEL 3 :
+
+       CMP A , 5 
+       JLE LABEL 7 
+
+     LABEL 4 :
+
+        MOV AX , B
+        ADD AX , B
+        PUSH AX 
+
+     LABEL 5 :
+
+       JMP LABEL 3 
+
+     LABEL 6 :
+
+       JMP LABEL 10 
+
+     LABEL 7 :
+
+        MOV AX , B
+        ADD AX , B
+        PUSH AX 
+
+     LABEL 8 :
+
+       JMP LABEL 10 
+
+     LABEL 9 :
+
+       CMP A , C 
+       JL LABEL 7 
+
+     LABEL 10:
+
+       MOV AH,4CH
+       INT 21h
+       CODE ENDS
+       END PROG_PRINCIPAL

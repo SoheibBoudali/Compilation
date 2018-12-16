@@ -69,7 +69,7 @@
 
 
 #if ! defined (YYSTYPE) && ! defined (YYSTYPE_IS_DECLARED)
-#line 19 "TP.y"
+#line 20 "TP.y"
 typedef union YYSTYPE {
 char *chaine;
 int entier;

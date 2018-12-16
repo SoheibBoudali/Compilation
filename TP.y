@@ -5,6 +5,7 @@ extern int NL,NC;
 #include"TableS.h"
 #include"Quad.c"
 #include"Pile.c"
+
 struct ENTITE *TS;
 struct  BIB *TB;
 char Type[10]="";
@@ -301,7 +302,7 @@ Show(&TS);
 ShowB(&TB);
 Opt1(&Q,&TS);
 Useless(&Q,&TS);
-ShowQ(&Q);/*
-Machine(&Q,&TS);*/
+ShowQ(&Q);
+Machine(&Q,&TS);
 return 0;
 }
