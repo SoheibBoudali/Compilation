@@ -34,7 +34,7 @@
      LABEL 2 :
 
        CMP A , 5 
-       JLE LABEL 6 
+       JLE LABEL 8 
 
      LABEL 3 :
 
@@ -44,28 +44,40 @@
 
      LABEL 4 :
 
-       JMP LABEL 2 
+        MOV BX , SP
+        MOV SP , BP - 4 
+        POP AX 
+        MOV SP , BX
+        ADD AX , B 
+        PUSH AX 
 
      LABEL 5 :
 
-       JMP LABEL 9 
+       JMP LABEL 2 
 
      LABEL 6 :
 
-        MOV AX , B
-        ADD AX , B
-        PUSH AX 
+       JMP LABEL 10 
 
      LABEL 7 :
 
-       JMP LABEL 9 
+        MOV BX , SP
+        MOV SP , BP - 6 
+        POP AX 
+        MOV SP , BX
+        ADD AX , B 
+        PUSH AX 
 
      LABEL 8 :
 
-       CMP A , C 
-       JL LABEL 6 
+       JMP LABEL 10 
 
-     LABEL 9:
+     LABEL 9 :
+
+       CMP A , C 
+       JL LABEL 7 
+
+     LABEL 10:
 
        MOV AH,4CH
        INT 21h
