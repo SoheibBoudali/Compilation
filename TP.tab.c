@@ -104,7 +104,6 @@ extern int NL,NC;
 #include"TableS.h"
 #include"Quad.c"
 #include"Pile.c"
-
 struct ENTITE *TS;
 struct  BIB *TB;
 char Type[10]="";
@@ -114,6 +113,7 @@ int num=1;
 int temp=1;
 char * tempc;
 struct PILE *Pile;
+char ConstType[10];
 
 
 /* Enabling traces.  */
@@ -392,19 +392,11 @@ static const yysigned_char yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const unsigned short int yyrline[] =
 {
-<<<<<<< HEAD
-       0,    34,    34,    36,    37,    40,    44,    48,    54,    55,
-      58,    59,    60,    63,    69,    77,    83,    90,    91,    93,
-     101,   102,   105,   106,   109,   110,   111,   114,   120,   127,
-     134,   137,   144,   151,   154,   162,   176,   184,   194,   198,
-     209,   218,   245,   247,   253,   285
-=======
        0,    35,    35,    37,    38,    41,    45,    49,    55,    56,
-      59,    60,    61,    64,    70,    78,    84,    91,    92,    94,
-     102,   103,   106,   107,   110,   111,   112,   115,   121,   128,
-     135,   138,   145,   152,   155,   163,   177,   185,   195,   199,
-     210,   219,   246,   248,   254,   286
->>>>>>> Code
+      59,    60,    61,    64,    70,    77,    86,    96,    97,    99,
+     106,   107,   110,   111,   114,   115,   116,   119,   126,   133,
+     140,   143,   150,   157,   160,   168,   182,   190,   200,   204,
+     215,   224,   251,   253,   259,   291
 };
 #endif
 
@@ -1272,39 +1264,43 @@ yyreduce:
     break;
 
   case 15:
-<<<<<<< HEAD
 #line 77 "TP.y"
-=======
-#line 78 "TP.y"
->>>>>>> Code
-    { if(!Search(&TS,(yyvsp[-4].chaine))) Insert(&TS,(yyvsp[-4].chaine),Type,1,"CONST",NL);
-                              else{
-                                if(GetLine(&TS,(yyvsp[-4].chaine))==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
-                                else printf("Erreur a la ligne %d : Constate deja definie a la ligne %d \n",NL,GetLine(&TS,(yyvsp[-4].chaine)));
-                              }
-                            ;}
+    { if(!Search(&TS,(yyvsp[-4].chaine))) {
+                                              Insert(&TS,(yyvsp[-4].chaine),Type,1,"CONST",NL);
+                                              if(strcmp(GetType(&TS,(yyvsp[-4].chaine)),ConstType)!=0) 
+                                                printf("Erreur a la ligne %d: Incompatibilité de type \n",NL);
+                                            }else{
+                                              if(GetLine(&TS,(yyvsp[-4].chaine))==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
+                                              else printf("Erreur a la ligne %d : Constate deja definie a la ligne %d \n",NL,GetLine(&TS,(yyvsp[-4].chaine)));
+                                            }
+                                          ;}
     break;
 
   case 16:
-<<<<<<< HEAD
-#line 83 "TP.y"
-=======
-#line 84 "TP.y"
->>>>>>> Code
-    { if(!Search(&TS,(yyvsp[-3].chaine))) Insert(&TS,(yyvsp[-3].chaine),Type,1,"CONST",NL);
-                    else{
-                      if(GetLine(&TS,(yyvsp[-3].chaine))==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
-                      else printf("Erreur a la ligne %d : Constate deja definiea la ligne %d \n",NL,GetLine(&TS,(yyvsp[-3].chaine)));
-                    }
-                  ;}
+#line 86 "TP.y"
+    { if(!Search(&TS,(yyvsp[-3].chaine))) {
+                                    Insert(&TS,(yyvsp[-3].chaine),Type,1,"CONST",NL);
+                                    if(strcmp(GetType(&TS,(yyvsp[-3].chaine)),ConstType)!=0) 
+                                      printf("Erreur a la ligne %d: Incompatibilité de type \n",NL);
+                                  }else{
+                                    if(GetLine(&TS,(yyvsp[-3].chaine))==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
+                                    else printf("Erreur a la ligne %d : Constate deja definiea la ligne %d \n",NL,GetLine(&TS,(yyvsp[-3].chaine)));
+                                  }
+                                ;}
+    break;
+
+  case 17:
+#line 96 "TP.y"
+    {strcpy(ConstType,"Integer");;}
+    break;
+
+  case 18:
+#line 97 "TP.y"
+    {strcpy(ConstType,"Real");;}
     break;
 
   case 19:
-<<<<<<< HEAD
-#line 93 "TP.y"
-=======
-#line 94 "TP.y"
->>>>>>> Code
+#line 99 "TP.y"
     { if(!Search(&TS,(yyvsp[-4].chaine))) Insert(&TS,(yyvsp[-4].chaine),Type,(yyvsp[-2].entier),"TAB",NL);
                                   else{
                                     if(GetLine(&TS,(yyvsp[-4].chaine))==NL) printf("Erreur a la ligne %d : Double declaration du tableau dans la meme ligne %d \n",NL,NL);
@@ -1314,59 +1310,36 @@ yyreduce:
     break;
 
   case 20:
-<<<<<<< HEAD
-#line 101 "TP.y"
-=======
-#line 102 "TP.y"
->>>>>>> Code
+#line 106 "TP.y"
     {strcpy(Type,"Real");;}
     break;
 
   case 21:
-<<<<<<< HEAD
-#line 102 "TP.y"
-=======
-#line 103 "TP.y"
->>>>>>> Code
+#line 107 "TP.y"
     {strcpy(Type,"Integer");;}
     break;
 
   case 24:
-<<<<<<< HEAD
-#line 109 "TP.y"
-=======
-#line 110 "TP.y"
->>>>>>> Code
+#line 114 "TP.y"
     { if(!SearchB(&TB,"BOUCLE")) printf("Erreur a la ligne %d : Bibliothéque BOUCLE non Déclarée!\n",NL);;}
     break;
 
   case 26:
-<<<<<<< HEAD
-#line 111 "TP.y"
-=======
-#line 112 "TP.y"
->>>>>>> Code
+#line 116 "TP.y"
     { if(!SearchB(&TB,"Calcul")) printf("Erreur a la ligne %d : Bibliothéque Calcul non Déclarée!\n",NL);;}
     break;
 
   case 27:
-<<<<<<< HEAD
-#line 114 "TP.y"
-=======
-#line 115 "TP.y"
->>>>>>> Code
-    { strcpy(CurrentType,"");
+#line 119 "TP.y"
+    { if(strcmp(GetNature(&TS,(yyvsp[-3].s).val),"VAR")!=0) printf("Erreur a la ligne %d : IDF n'est pas une Variable \n",NL);
+                                  strcpy(CurrentType,"");
                                   InsertQ(&Q,"=",(yyvsp[-1].s).val,"",(yyvsp[-3].s).val,num);
                                   num++;
                                 ;}
     break;
 
   case 28:
-<<<<<<< HEAD
-#line 120 "TP.y"
-=======
-#line 121 "TP.y"
->>>>>>> Code
+#line 126 "TP.y"
     { char* tempc=malloc(sizeof(10));
                           sprintf(tempc,"T%d",temp);
                           temp++;
@@ -1377,11 +1350,7 @@ yyreduce:
     break;
 
   case 29:
-<<<<<<< HEAD
-#line 127 "TP.y"
-=======
-#line 128 "TP.y"
->>>>>>> Code
+#line 133 "TP.y"
     {  char* tempc=malloc(sizeof(10));   
                           sprintf(tempc,"T%d",temp);
                           temp++; 
@@ -1392,20 +1361,12 @@ yyreduce:
     break;
 
   case 30:
-<<<<<<< HEAD
-#line 134 "TP.y"
-=======
-#line 135 "TP.y"
->>>>>>> Code
+#line 140 "TP.y"
     { strcpy((yyval.s).val,(yyvsp[0].s).val); ;}
     break;
 
   case 31:
-<<<<<<< HEAD
-#line 137 "TP.y"
-=======
-#line 138 "TP.y"
->>>>>>> Code
+#line 143 "TP.y"
     { char* tempc=malloc(sizeof(10));   
                             sprintf(tempc,"T%d",temp);
                             temp++; 
@@ -1416,11 +1377,7 @@ yyreduce:
     break;
 
   case 32:
-<<<<<<< HEAD
-#line 144 "TP.y"
-=======
-#line 145 "TP.y"
->>>>>>> Code
+#line 150 "TP.y"
     { char* tempc=malloc(sizeof(10));   
                             sprintf(tempc,"T%d",temp);
                             temp++; 
@@ -1431,20 +1388,12 @@ yyreduce:
     break;
 
   case 33:
-<<<<<<< HEAD
-#line 151 "TP.y"
-=======
-#line 152 "TP.y"
->>>>>>> Code
+#line 157 "TP.y"
     { strcpy((yyval.s).val,(yyvsp[0].s).val);;}
     break;
 
   case 34:
-<<<<<<< HEAD
-#line 154 "TP.y"
-=======
-#line 155 "TP.y"
->>>>>>> Code
+#line 160 "TP.y"
     { if(!Search(&TS,(yyvsp[0].chaine))) printf("Erreur a la ligne %d : IDF non declaré\n " ,NL); 
             if(strcmp(CurrentType,"")!=0){
               if(strcmp(CurrentType,GetType(&TS,(yyvsp[0].chaine)))!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
@@ -1456,11 +1405,7 @@ yyreduce:
     break;
 
   case 35:
-<<<<<<< HEAD
-#line 162 "TP.y"
-=======
-#line 163 "TP.y"
->>>>>>> Code
+#line 168 "TP.y"
     { if(!Search(&TS,(yyvsp[-3].chaine))) {
                             printf("Erreur a la ligne %d :IDF non declaré\n",NL);
                           }else{
@@ -1478,11 +1423,7 @@ yyreduce:
     break;
 
   case 36:
-<<<<<<< HEAD
-#line 176 "TP.y"
-=======
-#line 177 "TP.y"
->>>>>>> Code
+#line 182 "TP.y"
     { if(strcmp(CurrentType,"")!=0) {
                   if(strcmp(CurrentType,"Integer")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
                 }else{
@@ -1494,11 +1435,7 @@ yyreduce:
     break;
 
   case 37:
-<<<<<<< HEAD
-#line 184 "TP.y"
-=======
-#line 185 "TP.y"
->>>>>>> Code
+#line 190 "TP.y"
     { if(strcmp(CurrentType,"")!=0) {
                 if(strcmp(CurrentType,"Real")!=0) {printf("Erreur a la ligne %d : Incompatibilité de type \n",NL);}
                 }else{
@@ -1510,11 +1447,7 @@ yyreduce:
     break;
 
   case 38:
-<<<<<<< HEAD
-#line 194 "TP.y"
-=======
-#line 195 "TP.y"
->>>>>>> Code
+#line 200 "TP.y"
     { strcpy(CurrentType,GetType(&TS,(yyvsp[0].chaine)));  
             if(!Search(&TS,(yyvsp[0].chaine))) printf("Erreur a la ligne %d : IDF non declaré\n",NL); 
             strcpy((yyval.s).val,(yyvsp[0].chaine));
@@ -1522,11 +1455,7 @@ yyreduce:
     break;
 
   case 39:
-<<<<<<< HEAD
-#line 198 "TP.y"
-=======
-#line 199 "TP.y"
->>>>>>> Code
+#line 204 "TP.y"
     { strcpy(CurrentType,GetType(&TS,(yyvsp[-3].chaine))); 
                           if((yyvsp[-1].entier)>CheckTabSize(&TS,(yyvsp[-3].chaine))) printf("Erreur a la ligne %d : Debordement \n",NL);
                           if(!Search(&TS,(yyvsp[-3].chaine))) {
@@ -1540,11 +1469,7 @@ yyreduce:
     break;
 
   case 40:
-<<<<<<< HEAD
-#line 209 "TP.y"
-=======
-#line 210 "TP.y"
->>>>>>> Code
+#line 215 "TP.y"
     { int x=PULL(&Pile);
                               char *tempc;
                               tempc=malloc(sizeof(10));
@@ -1556,11 +1481,7 @@ yyreduce:
     break;
 
   case 41:
-<<<<<<< HEAD
-#line 218 "TP.y"
-=======
-#line 219 "TP.y"
->>>>>>> Code
+#line 224 "TP.y"
     {  PUSH(&Pile,num);
                                 if(strcmp((yyvsp[-2].chaine),"<")==0){
                                 InsertQ(&Q,"BGE","",(yyvsp[-3].s).val,(yyvsp[-1].s).val,num);
@@ -1590,11 +1511,7 @@ yyreduce:
     break;
 
   case 43:
-<<<<<<< HEAD
-#line 247 "TP.y"
-=======
-#line 248 "TP.y"
->>>>>>> Code
+#line 253 "TP.y"
     { InsertQ(&Q,"BR","","","",num);
                   PUSH(&Pile,num);
                   num++;
@@ -1603,11 +1520,7 @@ yyreduce:
     break;
 
   case 44:
-<<<<<<< HEAD
-#line 253 "TP.y"
-=======
-#line 254 "TP.y"
->>>>>>> Code
+#line 259 "TP.y"
     {  MAJQ(&Q,PULL(&Pile),num+1);
                                                 int x;
                                                 x=PULL(&Pile);
@@ -1642,11 +1555,7 @@ yyreduce:
     break;
 
   case 45:
-<<<<<<< HEAD
-#line 285 "TP.y"
-=======
-#line 286 "TP.y"
->>>>>>> Code
+#line 291 "TP.y"
     { InsertQ(&Q,"BR","","","",num);
                         PUSH(&Pile,num);
                         num++;
@@ -1658,11 +1567,7 @@ yyreduce:
     }
 
 /* Line 1126 of yacc.c.  */
-<<<<<<< HEAD
-#line 1553 "TP.tab.c"
-=======
-#line 1554 "TP.tab.c"
->>>>>>> Code
+#line 1571 "TP.tab.c"
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -1930,11 +1835,7 @@ yyreturn:
 }
 
 
-<<<<<<< HEAD
-#line 290 "TP.y"
-=======
-#line 291 "TP.y"
->>>>>>> Code
+#line 296 "TP.y"
 
 int yyerror(char* msg)
 {

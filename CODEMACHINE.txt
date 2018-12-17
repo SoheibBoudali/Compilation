@@ -2,6 +2,7 @@
       B   DD   ?
       A   DD   ?
       C   EQU (Valeur de la constante non recupéré) 
+      K   EQU (Valeur de la constante non recupéré) 
      DATA ENDS
 
 
@@ -32,42 +33,39 @@
 
      LABEL 2 :
 
+       CMP A , 5 
+       JLE LABEL 6 
 
      LABEL 3 :
 
-       CMP A , 5 
-       JLE LABEL 7 
+        MOV AX , B
+        ADD AX , B
+        PUSH AX 
 
      LABEL 4 :
 
-        MOV AX , B
-        ADD AX , B
-        PUSH AX 
+       JMP LABEL 2 
 
      LABEL 5 :
 
-       JMP LABEL 3 
+       JMP LABEL 9 
 
      LABEL 6 :
-
-       JMP LABEL 10 
-
-     LABEL 7 :
 
         MOV AX , B
         ADD AX , B
         PUSH AX 
 
+     LABEL 7 :
+
+       JMP LABEL 9 
+
      LABEL 8 :
 
-       JMP LABEL 10 
-
-     LABEL 9 :
-
        CMP A , C 
-       JL LABEL 7 
+       JL LABEL 6 
 
-     LABEL 10:
+     LABEL 9:
 
        MOV AH,4CH
        INT 21h

@@ -122,6 +122,20 @@ char* GetType (struct ENTITE** Tete, char NomE[12]){
 	}
 	return "";
 }
+char* GetNature (struct ENTITE** Tete, char NomE[12]){
+	struct ENTITE* Parcourir;
+	Parcourir = *Tete;
+	if (Parcourir!=NULL){
+		while(Parcourir!=NULL){
+			if(strcmp((*Parcourir).NomE,NomE)==0){
+				return (*Parcourir).State;
+				break;
+			}else
+				Parcourir=(*Parcourir).SVT;
+		}	
+	}
+	return "";
+}
 int GetLine(struct ENTITE** Tete , char NomE [12]){
 	struct ENTITE* Parcourir;
 	Parcourir = *Tete;

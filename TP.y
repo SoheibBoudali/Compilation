@@ -5,7 +5,6 @@ extern int NL,NC;
 #include"TableS.h"
 #include"Quad.c"
 #include"Pile.c"
-
 struct ENTITE *TS;
 struct  BIB *TB;
 char Type[10]="";
@@ -15,6 +14,7 @@ int num=1;
 int temp=1;
 char * tempc;
 struct PILE *Pile;
+char ConstType[10];
 %}
 %union
 {
@@ -74,21 +74,27 @@ DecVar: IDF SEP DecVar  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"VAR",NL);
                       }
                   }       
 ;
-DecConst: IDF  EGAL VALEUR  SEP DecConst  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"CONST",NL);
-                              else{
-                                if(GetLine(&TS,$1)==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
-                                else printf("Erreur a la ligne %d : Constate deja definie a la ligne %d \n",NL,GetLine(&TS,$1));
-                              }
-                            }
-        | IDF  EGAL VALEUR ';' { if(!Search(&TS,$1)) Insert(&TS,$1,Type,1,"CONST",NL);
-                    else{
-                      if(GetLine(&TS,$1)==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
-                      else printf("Erreur a la ligne %d : Constate deja definiea la ligne %d \n",NL,GetLine(&TS,$1));
-                    }
-                  }      
-;
-VALEUR: ENTIER
-      | REEL
+DecConst: IDF  EGAL VALEUR  SEP DecConst  { if(!Search(&TS,$1)) {
+                                              Insert(&TS,$1,Type,1,"CONST",NL);
+                                              if(strcmp(GetType(&TS,$1),ConstType)!=0) 
+                                                printf("Erreur a la ligne %d: Incompatibilité de type \n",NL);
+                                            }else{
+                                              if(GetLine(&TS,$1)==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
+                                              else printf("Erreur a la ligne %d : Constate deja definie a la ligne %d \n",NL,GetLine(&TS,$1));
+                                            }
+                                          }
+        | IDF  EGAL VALEUR ';' { if(!Search(&TS,$1)) {
+                                    Insert(&TS,$1,Type,1,"CONST",NL);
+                                    if(strcmp(GetType(&TS,$1),ConstType)!=0) 
+                                      printf("Erreur a la ligne %d: Incompatibilité de type \n",NL);
+                                  }else{
+                                    if(GetLine(&TS,$1)==NL) printf("Erreur a la ligne %d : Double declaration de la Constate dans la meme ligne %d \n",NL,NL);
+                                    else printf("Erreur a la ligne %d : Constate deja definiea la ligne %d \n",NL,GetLine(&TS,$1));
+                                  }
+                                }      
+  ;
+VALEUR: ENTIER {strcpy(ConstType,"Integer");}
+      | REEL  {strcpy(ConstType,"Real");} 
 ;
 DecTab: IDF '[' ENTIER ']' ';'  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,$3,"TAB",NL);
                                   else{
@@ -97,7 +103,6 @@ DecTab: IDF '[' ENTIER ']' ';'  { if(!Search(&TS,$1)) Insert(&TS,$1,Type,$3,"TAB
                                   }
                                 }    
 ;
-
 TYPE: Real  {strcpy(Type,"Real");}
     | Integer {strcpy(Type,"Integer");}
 ;
@@ -111,7 +116,8 @@ TypeInstruction: LOOP { if(!SearchB(&TB,"BOUCLE")) printf("Erreur a la ligne %d 
                 | AFFECTATION { if(!SearchB(&TB,"Calcul")) printf("Erreur a la ligne %d : Bibliothéque Calcul non Déclarée!\n",NL);}
 ;
 
-AFFECTATION : IDFA EGAL EXP ';' { strcpy(CurrentType,"");
+AFFECTATION : IDFA EGAL EXP ';' { if(strcmp(GetNature(&TS,$1.val),"VAR")!=0) printf("Erreur a la ligne %d : IDF n'est pas une Variable \n",NL);
+                                  strcpy(CurrentType,"");
                                   InsertQ(&Q,"=",$3.val,"",$1.val,num);
                                   num++;
                                 }
